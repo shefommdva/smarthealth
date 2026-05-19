@@ -1,0 +1,235 @@
+﻿<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Həkim Girişi | SmartHealth</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <link rel="stylesheet" href="assets/modern-redesign.css">
+    <link rel="stylesheet" href="assets/site-navbar.css">
+    <link rel="stylesheet" href="assets/site-footer.css">
+
+    <style>
+        .auth-container {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            background: #fff;
+        }
+
+        /* Branding Side */
+        .auth-visual {
+            background: #f8fafc;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 40px;
+        }
+
+        .auth-visual .glass-panel {
+            max-width: 500px;
+            padding: 60px;
+            z-index: 2;
+            text-align: center;
+        }
+
+        /* Form Side */
+        .auth-form-side {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+        }
+
+        .auth-card-modern {
+            width: 100%;
+            max-width: 420px;
+            opacity: 1 !important;
+            transform: none !important;
+        }
+
+        .auth-tabs-modern {
+            display: flex;
+            gap: 8px;
+            background: rgba(0,0,0,0.03);
+            padding: 6px;
+            border-radius: 16px;
+            margin-bottom: 32px;
+        }
+
+        .auth-tab-modern {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 14px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .auth-tab-modern.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .input-group-modern {
+            margin-bottom: 20px;
+        }
+
+        .input-group-modern label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .input-modern {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 14px;
+            border: 1px solid rgba(0,0,0,0.1);
+            background: #fcfcfc;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        .input-modern:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
+        }
+
+        #authMessage {
+            margin-top: 15px;
+            font-size: 14px;
+            text-align: center;
+            min-height: 20px;
+        }
+
+        #authMessage.error { color: #ef4444; }
+        #authMessage.success { color: #10b981; }
+
+        @media (max-width: 1024px) {
+            .auth-container { grid-template-columns: 1fr; }
+            .auth-visual { display: none; }
+            .auth-form-side { background: #f8fafc; }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="auth-container">
+        <section class="auth-visual">
+            <div class="gradient-blob blob-1" style="width: 600px; height: 600px; top: -10%; left: -10%;"></div>
+            <div class="gradient-blob blob-2" style="width: 500px; height: 500px; bottom: -5%; right: -5%;"></div>
+            
+            <div class="glass-panel fade-up">
+                <div class="icon-box" style="margin: 0 auto 30px; background: white;">
+                    <i class="fa-solid fa-user-doctor"></i>
+                </div>
+                <h2 style="font-size: 32px; margin-bottom: 20px;">Həkim Portalı</h2>
+                <p style="color: var(--text-secondary); line-height: 1.6; font-size: 17px;">
+                    Pasiyent qəbullarınızı idarə edin, rəqəmsal cədvəlinizi nizamlayın və tibbi xidmətlərinizi minlərlə istifadəçiyə çatdırın.
+                </p>
+            </div>
+        </section>
+
+        <section class="auth-form-side">
+            <div class="auth-card-modern stagger-cards">
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <h1 style="font-size: 28px; font-weight: 800; margin-top: 80px; margin-bottom: 10px;">Xoş gəlmisiniz</h1>
+                    <p style="color: var(--text-secondary);">Davam etmək üçün hesabınıza daxil olun</p>
+                </div>
+
+                <div class="auth-tabs-modern">
+                    <a href="login.htm" class="auth-tab-modern">Pasiyent</a>
+                    <a href="doctor-login.htm" class="auth-tab-modern active">Həkim</a>
+                </div>
+
+                <form id="loginForm">
+                    <div class="input-group-modern">
+                        <label for="loginEmail">E-poçt ünvanı</label>
+                        <input type="email" id="loginEmail" class="input-modern" placeholder="dr.ad@smarthealth.az" required>
+                    </div>
+
+                    <div class="input-group-modern">
+                        <label for="loginPassword">Şifrə</label>
+                        <input type="password" id="loginPassword" class="input-modern" placeholder="••••••••" required>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; margin-bottom: 30px;">
+                        <a href="#" style="font-size: 13px; color: var(--primary); text-decoration: none; font-weight: 600;">Şifrəni unutmusunuz?</a>
+                    </div>
+
+                    <button type="submit" class="btn-pill btn-primary" style="width: 100%; padding: 16px; font-size: 16px;">
+                        Giriş et
+                    </button>
+                    
+                    <div id="authMessage"></div>
+                </form>
+
+                <div style="margin-top: 40px; text-align: center; font-size: 14px; color: var(--text-secondary);">
+                    Platformada yoxsunuz? <a href="partner-portal.htm" style="color: var(--primary); font-weight: 700; text-decoration: none;">Tərəfdaş olun</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script>
+        // Existing logic preserved and updated with UI selectors
+        const form = document.getElementById('loginForm');
+        const message = document.getElementById('authMessage');
+
+        form.addEventListener('submit', async event => {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const button = form.querySelector('button');
+
+            message.className = '';
+            message.textContent = '';
+            button.disabled = true;
+            button.textContent = 'Giriş edilir...';
+
+            try {
+                // Assuming firebase is initialized in assets/firebase-config.js or similar
+                // await firebase.auth().signInWithEmailAndPassword(email, password);
+                
+                // Mocking success for demo
+                setTimeout(() => {
+                    localStorage.setItem('smarthealthAccountType', 'doctor');
+                    message.className = 'success';
+                    message.textContent = 'Uğurlu giriş. Kabinetə yönləndirilirsiniz...';
+                    window.location.href = 'doctor-kabinet.htm';
+                }, 1000);
+            } catch (error) {
+                message.className = 'error';
+                message.textContent = 'Email və ya şifrə yanlışdır.';
+                button.disabled = false;
+                button.textContent = 'Giriş et';
+                console.error(error.message);
+            }
+        });
+
+        document.querySelectorAll(".stagger-cards > *").forEach(el => {
+            el.style.opacity = "1";
+            el.style.transform = "none";
+        });
+    </script>
+    <script src="assets/site-navbar.js"></script>
+    <script src="assets/site-footer.js"></script>
+</body>
+</html>

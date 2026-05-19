@@ -1,0 +1,234 @@
+﻿<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haqqımızda | SmartHealth</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <link rel="stylesheet" href="assets/modern-redesign.css">
+    <link rel="stylesheet" href="assets/site-navbar.css">
+    <link rel="stylesheet" href="assets/site-footer.css">
+    
+    <style>
+        .about-hero {
+            padding: 180px 8% 100px;
+            text-align: center;
+            background: radial-gradient(circle at top right, rgba(14, 165, 233, 0.08), transparent 40%);
+        }
+
+        .mission-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            padding: 100px 8%;
+            align-items: center;
+        }
+
+        .value-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            padding: 0 8% 120px;
+        }
+
+        .value-card {
+            padding: 40px;
+            text-align: center;
+        }
+
+        .value-icon {
+            width: 64px;
+            height: 64px;
+            background: rgba(14, 165, 233, 0.1);
+            color: var(--primary);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin: 0 auto 24px;
+        }
+
+        /* --- Updated Stat Banner: White Background --- */
+        .stat-banner {
+            background: #ffffff;
+            padding: 60px 8%;
+            border-radius: 40px;
+            margin: 0 8% 100px;
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .stat-item h2 { 
+            font-size: 54px; 
+            font-weight: 900; 
+            margin-bottom: 5px; 
+            /* Added a gradient to the numbers for a professional look on white */
+            background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .stat-item p { 
+            color: #64748b; 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            font-size: 14px;
+        }
+
+        @media (max-width: 1024px) {
+            .mission-grid, .value-cards { grid-template-columns: 1fr; }
+            .stat-banner { flex-direction: column; gap: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="island-nav-wrapper">
+        <nav class="island-nav">
+            <a href="homepage.htm" class="logo"><i class="fa-solid fa-staff-snake"></i> SmartHealth</a>
+            <div class="nav-links">
+                <a href="doctors.htm">Həkimlər</a>
+                <a href="clinics.htm">Klinikalar</a>
+                <a href="help.htm">Yardım</a>
+            </div>
+            <a href="login.htm" class="btn-pill btn-primary">Giriş</a>
+        </nav>
+    </div>
+
+    <section class="about-hero fade-up">
+        <div class="gradient-blob blob-1"></div>
+        <span class="expert-badge" style="background: rgba(14, 165, 233, 0.1); color: var(--primary); padding: 8px 20px; border-radius: 99px; font-weight: 700; font-size: 14px;">MİSSİYAMIZ</span>
+        <h1 class="hero-title" style="font-size: clamp(40px, 5vw, 64px); margin-top: 24px;">Səhiyyəni rəqəmsal <br><span class="text-gradient">gələcəyə daşıyırıq</span></h1>
+        <p class="hero-subtitle" style="max-width: 700px; margin: 30px auto;">SmartHealth olaraq məqsədimiz pasiyentlərlə tibb müəssisələri arasındakı maneələri aradan qaldırmaq və hər kəs üçün əlçatan tibbi xidmət yaratmaqdır.</p>
+    </section>
+
+    <section class="stat-banner fade-up">
+        <div class="stat-item">
+            <h2 class="stat-counter">500+</h2>
+            <p>Peşəkar Həkim</p>
+        </div>
+        <div class="stat-item">
+            <h2 class="stat-counter">120+</h2>
+            <p>Partnyor Klinika</p>
+        </div>
+        <div class="stat-item">
+            <h2 class="stat-counter">50k+</h2>
+            <p>Aylıq İstifadəçi</p>
+        </div>
+    </section>
+
+    <section class="mission-grid">
+        <div class="fade-up">
+            <h2 style="font-size: 32px; font-weight: 800; margin-bottom: 24px;">Niyə biz?</h2>
+            <p style="color: var(--text-secondary); line-height: 1.8; font-size: 18px; margin-bottom: 30px;">
+                Biz sadəcə bir axtarış platforması deyilik. Biz tibbi xidmətin keyfiyyətini, şəffaflığını və sürətini artıran bir ekosistemik.
+            </p>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 12px; font-weight: 600;">
+                    <i class="fa-solid fa-circle-check" style="color: var(--primary);"></i> 100% yoxlanılmış həkim rəyləri
+                </li>
+                <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 12px; font-weight: 600;">
+                    <i class="fa-solid fa-circle-check" style="color: var(--primary);"></i> Bütün sığorta provayderləri ilə inteqrasiya
+                </li>
+            </ul>
+        </div>
+        <div class="glass-panel fade-up" style="height: 400px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; background: #f8fafc; border-radius: 32px;">
+            <i class="fa-solid fa-heart-pulse" style="font-size: 180px; color: var(--primary); opacity: 0.1;"></i>
+            <div style="position: absolute; text-align: center; padding: 40px;">
+                <h3 style="color: var(--primary); font-size: 24px;">İnsan yönümlü texnologiya</h3>
+            </div>
+        </div>
+    </section>
+
+    <section class="value-cards stagger-cards">
+        <div class="value-card">
+            <div class="value-icon"><i class="fa-solid fa-shield"></i></div>
+            <h3>Etibarlılıq</h3>
+            <p style="color: #64748b; margin-top: 15px;">Məlumatlarınızın təhlükəsizliyi bizim prioritetimizdir.</p>
+        </div>
+        <div class="value-card">
+            <div class="value-icon"><i class="fa-solid fa-bolt"></i></div>
+            <h3>Sürət</h3>
+            <p style="color: #64748b; margin-top: 15px;">Qəbula yazılmaq cəmi 30 saniyə çəkir.</p>
+        </div>
+        <div class="value-card">
+            <div class="value-icon"><i class="fa-solid fa-eye"></i></div>
+            <h3>Şəffaflıq</h3>
+            <p style="color: #64748b; margin-top: 15px;">Qiymətlər və rəylər hər kəs üçün şəffafdır.</p>
+        </div>
+    </section>
+
+    <footer class="premium-footer">
+        <div class="footer-bottom">
+            <p>© 2026 SmartHealth. Bakı, Azərbaycan</p>
+        </div>
+    </footer>
+
+    <script src="assets/modern-redesign.js"></script>
+    <script src="assets/site-navbar.js"></script>
+    <script src="assets/site-footer.js"></script>
+    <script>
+        function animateCounter(counter) {
+            // Guard: don't re-run if already animating or done
+            if (counter.dataset.animated) return;
+            counter.dataset.animated = 'true';
+
+            const originalText = counter.textContent.trim();
+            const targetNumber = parseInt(originalText.replace(/\D/g, ''), 10) || 0;
+            const suffix = originalText.replace(/[0-9]/g, '');
+
+            const duration = 2000;
+            let startTime = null;
+            let rafId = null;
+
+            function tick(now) {
+                if (!startTime) startTime = now;
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+
+                // Power4 ease-out
+                const easedProgress = 1 - Math.pow(1 - progress, 4);
+                const currentValue = Math.round(targetNumber * easedProgress);
+
+                // Never show 0 — keep original text until first real value
+                if (currentValue > 0) {
+                    counter.textContent = currentValue + suffix;
+                }
+
+                if (progress < 1) {
+                    rafId = requestAnimationFrame(tick);
+                } else {
+                    // Always lock in the exact original text at the end
+                    counter.textContent = originalText;
+                    rafId = null;
+                }
+            }
+
+            rafId = requestAnimationFrame(tick);
+        }
+
+        // Use threshold: 0 so it triggers as soon as ANY part is visible,
+        // well before the user can scroll past it
+        const statObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.querySelectorAll('.stat-counter').forEach(animateCounter);
+                    statObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        const banner = document.querySelector('.stat-banner');
+        if (banner) statObserver.observe(banner);
+    </script>
+</body>
+</html>

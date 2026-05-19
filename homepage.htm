@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartHealth | Tam Tibbi Platforma</title>
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Custom Redesign Styles -->
+    <link rel="stylesheet" href="assets/modern-redesign.css">
+    <link rel="stylesheet" href="assets/site-navbar.css">
+    <link rel="stylesheet" href="assets/site-footer.css">
+</head>
+<body>
+
+    <div class="island-nav-wrapper">
+        <nav class="island-nav">
+            <a href="homepage.htm" class="logo">
+                <i class="fa-solid fa-staff-snake"></i> SmartHealth
+            </a>
+            
+            <div class="nav-links">
+                <a href="#" onclick="toggleBrowseModal(event)">Baxış <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i></a>
+                <a href="help.htm">Kömək</a>
+                <a href="partner-portal.htm">Partner portal</a>
+                <a href="login.htm">Daxil ol</a>
+            </div>
+
+            <a href="qeydiyyat.htm" class="btn-pill btn-primary">Qeydiyyat</a>
+        </nav>
+    </div>
+
+    <div class="browse-modal" id="browseModal">
+        <div class="browse-content">
+            <span class="close-browse" onclick="closeBrowseModal()">&times;</span>
+            <div class="browse-tabs">
+                <div class="browse-tab active" onclick="switchBrowseTab('specialties', this)">İxtisaslar</div>
+                <div class="browse-tab" onclick="switchBrowseTab('procedures', this)">Proseduralar</div>
+            </div>
+            <div id="specialtiesTab" class="browse-tab-content active">
+                <h3 style="margin-bottom: 20px; color: var(--text-dark);">Populyar ixtisasları baxın</h3>
+                <div class="browse-grid">
+                    <div>
+                        <div class="browse-item"><a href="search-results.htm?specialty=stomatology">Stomatoloq</a></div>
+                        <div class="browse-item"><a href="search-results.htm?specialty=cardiology">Kardioloq</a></div>
+                        <div class="browse-item"><a href="search-results.htm?specialty=pediatrics">Pediatr</a></div>
+                        <div class="browse-item"><a href="search-results.htm?specialty=ophthalmology">Oftalmoloq</a></div>
+                    </div>
+                    <div>
+                        <div class="browse-item"><a href="search-results.htm?specialty=neurology">Nevroloq</a></div>
+                        <div class="browse-item"><a href="search-results.htm?specialty=therapy">Terapevt</a></div>
+                        <div class="browse-item"><a href="search-results.htm?specialty=dermatology">Dermatoloq</a></div>
+                        <div class="browse-item"><a href="search-results.htm?specialty=ent">LOR həkimi</a></div>
+                    </div>
+                    <div>
+                        <div class="browse-item"><a href="search-results.htm?specialty=urology">Uroloq cərrah</a></div>
+                        <div class="browse-item"><a href="search-results.htm?specialty=orthopedics">Ortoped</a></div>
+                        <div class="browse-item"><a href="search-results.htm?specialty=psychology">Psixoloq</a></div>
+                        <div class="browse-item"><a href="search-results.htm?specialty=physiotherapy">Fizioterapevt</a></div>
+                    </div>
+                    <div>
+                        <div class="browse-item"><a href="search-results.htm?specialty=genetics">Genetik</a></div>
+                        <div class="browse-item"><a href="search-results.htm?specialty=endocrinology">Endokrinoloq</a></div>
+                        <div class="browse-item"><a href="search-results.htm?specialty=gastroenterology">Qastroenteroloq</a></div>
+                        <div class="browse-item"><a href="search-results.htm" style="color: var(--primary); font-weight: 600;">Bütün ixtisasları gör</a></div>
+                    </div>
+                </div>
+            </div>
+            <div id="proceduresTab" class="browse-tab-content" style="display: none;">
+                <h3 style="margin-bottom: 20px; color: var(--text-dark);">Populyar proseduralar</h3>
+                <div class="browse-grid">
+                    <div>
+                        <div class="browse-item"><a href="#">UZM Diaqnostikası</a></div>
+                        <div class="browse-item"><a href="#">Rentgen</a></div>
+                        <div class="browse-item"><a href="#">Kompüter Tomoqrafiyası (KT)</a></div>
+                    </div>
+                    <div>
+                        <div class="browse-item"><a href="#">MRT</a></div>
+                        <div class="browse-item"><a href="#">Endoskopiya</a></div>
+                        <div class="browse-item"><a href="#">Biopsiya</a></div>
+                    </div>
+                    <div>
+                        <div class="browse-item"><a href="#">Cərrahi Əməliyyat</a></div>
+                        <div class="browse-item"><a href="#">Lazer Müalicəsi</a></div>
+                    </div>
+                    <div>
+                        <div class="browse-item"><a href="#">Fizioterapiya</a></div>
+                        <div class="browse-item"><a href="#">Psixoloji Məsləhət</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="hero-section">
+        <div class="gradient-blob blob-1"></div>
+        <div class="gradient-blob blob-2"></div>
+        <div class="gradient-blob blob-3"></div>
+        
+        <div class="fade-up">
+            <h1 class="hero-title">Sizin sığortanızı qəbul edən peşəkar həkimlər</h1>
+            <p class="hero-subtitle">SmartHealth ilə növbə götürmək artıq daha asandır. Premium səhiyyə təcrübəsini kəşf edin.</p>
+            <div class="hero-ctas">
+                <a href="search-results.htm" class="btn-pill btn-primary">Həkim Tap</a>
+                <a href="yoxlanmis-reyler.htm" class="btn-pill btn-ghost">Rəyləri Oxu</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="search-wrapper fade-up" style="margin-top: -60px; padding: 0 8%; position: relative; z-index: 10;">
+        <div class="glass-panel" style="display: flex; border-radius: 9999px; padding: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); flex-wrap: wrap; border: 1px solid rgba(255,255,255,0.5);">
+            <div class="search-input" style="flex: 1.5; padding: 12px 24px; border-right: 1px solid rgba(0,0,0,0.05); display: flex; align-items: center; min-width: 250px; position: relative; background: transparent;">
+                <i class="fa-solid fa-magnifying-glass" style="color: var(--primary);"></i>
+                <input type="text" id="searchInput" placeholder="Həkim, ixtisas və ya klinika" autocomplete="off" style="background: transparent; border: none; outline: none; width: 100%; margin-left: 12px; font-family: inherit; font-weight: 500;">
+                <div class="search-suggestions" id="searchSuggestions"></div>
+            </div>
+            <div class="search-input" style="flex: 1; padding: 12px 24px; border-right: 1px solid rgba(0,0,0,0.05); display: flex; align-items: center; min-width: 150px; position: relative; background: transparent;">
+                <i class="fa-solid fa-location-dot" style="color: var(--primary);"></i>
+                <input type="text" id="cityInput" value="Bakı" list="cityOptions" autocomplete="off" style="background: transparent; border: none; outline: none; width: 100%; margin-left: 12px; font-family: inherit; font-weight: 500;">
+            </div>
+            <div class="search-input" style="flex: 1.2; padding: 12px 24px; display: flex; align-items: center; min-width: 200px; position: relative; background: transparent;">
+                <i class="fa-solid fa-id-card" style="color: var(--primary);"></i>
+                <input type="text" id="insuranceInput" placeholder="Sığorta planı" onclick="openInsuranceModal()" readonly style="cursor: pointer; background: transparent; border: none; outline: none; width: 100%; margin-left: 12px; font-family: inherit; font-weight: 500;">
+            </div>
+            <button class="btn-pill btn-primary" onclick="performSearch()" style="margin: 4px; padding: 12px 40px;">Tap</button>
+        </div>
+    </div>
+
+    <section class="section-padding fade-up">
+        <h2 class="section-title">Seçilmiş ixtisaslar</h2>
+        <div class="grid-6 stagger-cards">
+            <div class="spec-item glass-card" onclick="searchBySpecialty('Stomatoloq')"><i class="fa-solid fa-tooth"></i><p>Stomatoloq</p></div>
+            <div class="spec-item glass-card" onclick="searchBySpecialty('Kardioloq')"><i class="fa-solid fa-heart-pulse"></i><p>Kardioloq</p></div>
+            <div class="spec-item glass-card" onclick="searchBySpecialty('Pediatr')"><i class="fa-solid fa-baby"></i><p>Pediatr</p></div>
+            <div class="spec-item glass-card" onclick="searchBySpecialty('Oftalmoloq')"><i class="fa-solid fa-eye"></i><p>Oftalmoloq</p></div>
+            <div class="spec-item glass-card" onclick="searchBySpecialty('Nevroloq')"><i class="fa-solid fa-brain"></i><p>Nevroloq</p></div>
+            <div class="spec-item glass-card" onclick="searchBySpecialty('Terapevt')"><i class="fa-solid fa-stethoscope"></i><p>Terapevt</p></div>
+        </div>
+    </section>
+
+    <section class="section-padding fade-up">
+        <h2 class="section-title">Sığorta tərəfdaşlarımız</h2>
+        <div class="ins-row stagger-cards" style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+            <div class="ins-box glass-card" style="padding: 20px 40px; border-radius: 9999px;" onclick="searchByInsurance('Paşa Sığorta')">Paşa Sığorta</div>
+            <div class="ins-box glass-card" style="padding: 20px 40px; border-radius: 9999px;" onclick="searchByInsurance('Atəşgah')">Atəşgah</div>
+            <div class="ins-box glass-card" style="padding: 20px 40px; border-radius: 9999px;" onclick="searchByInsurance('Qala Sığorta')">Qala Sığorta</div>
+            <div class="ins-box glass-card" style="padding: 20px 40px; border-radius: 9999px;" onclick="searchByInsurance('Meqa Sığorta')">Meqa Sığorta</div>
+            <div class="ins-box glass-card" style="padding: 20px 40px; border-radius: 9999px;" onclick="searchByInsurance('İcbari Tibbi Sığorta')">İcbari Tibbi Sığorta</div>
+        </div>
+    </section>
+
+    <section class="why-choose-us fade-up" style="background: transparent;">
+        <h2 class="section-title">Sizə uyğun həkim tapmaqda kömək edirik</h2>
+        <div class="why-choose-us-grid stagger-cards">
+            <div class="why-card glass-card">
+                <div class="why-card-image"><i class="fa-solid fa-user-doctor"></i></div>
+                <h3>Sığortanızı Qəbul Edən Həkimləri Tapın</h3>
+                <p>Sizin sığortanızı qəbul edən peşəkar həkimlərin geniş siyahısından asanlıqla seçim edin.</p>
+                <a href="search-results.htm" class="btn-pill btn-ghost" style="margin-top: auto;">Kəşf Et</a>
+            </div>
+
+            <div class="why-card glass-card">
+                <div class="why-card-image"><i class="fa-solid fa-star"></i></div>
+                <h3>Həkim Seçimində Rəyləri Oxuyun</h3>
+                <p>Həkim seçmədən əvvəl digər xəstələrin təsdiqlənmiş rəylərini və qiymətləndirmələrini oxuyun.</p>
+                <a href="yoxlanmis-reyler.htm" class="btn-pill btn-ghost" style="margin-top: auto;">Rəylərə Bax</a>
+            </div>
+
+            <div class="why-card glass-card">
+                <div class="why-card-image"><i class="fa-solid fa-calendar-check"></i></div>
+                <h3>İndi onlayn qəbula yazılın</h3>
+                <p>Asanlıqla onlayn video ziyarət və ya şəxsi randevu götürün. Dərhal sağlıq xidmətinə daxil olun.</p>
+                <button class="btn-pill btn-primary" onclick="openCareTypeModal()" style="margin-top: auto;">Qəbula Yazıl</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding app-promo fade-up" style="background: transparent; border-top: 1px solid rgba(0,0,0,0.05);">
+        <div class="app-left">
+            <h2 style="font-size: 48px; color: var(--text-primary); margin-bottom: 24px;">Minlərlə provayder.<br>Bir tətbiq.</h2>
+            <p>SmartHealth tətbiqi növbələrinizi sifariş etmək və izləmək üçün ən sürətli və rahat yoldur.</p>
+            <div class="qr-and-badges" style="margin-top: 40px;">
+                <div class="glass-card scale-in" style="padding: 16px; display: inline-block;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="qr" style="width: 120px; height: auto;">
+                </div>
+                <div class="badges">
+                    <a href="#" class="btn-pill btn-primary" style="margin-bottom: 12px;"><i class="fa-brands fa-apple"></i> App Store</a>
+                    <a href="#" class="btn-pill btn-primary"><i class="fa-brands fa-google-play"></i> Google Play</a>
+                </div>
+            </div>
+        </div>
+        <div class="app-right scale-in">
+            <img src="assets/pic.png" alt="App phone" style="width: 100%; max-width: 500px; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.1));">
+        </div>
+    </section>
+
+    <section class="section-padding provider-promo fade-up" style="background: var(--bg-main); border-radius: 40px; margin: 0 20px 100px; position: relative; overflow: hidden;">
+        <div class="gradient-blob blob-2" style="opacity: 0.2;"></div>
+        <div class="provider-left">
+            <h2 style="font-size: 42px; margin-bottom: 24px;">Klinikalar üçün SmartHealth</h2>
+            <p>Vaxtınız azdır, lakin pasiyent bazanızı genişləndirmək istəyirsiniz?</p>
+            <ul class="provider-benefits" style="list-style: none; margin-bottom: 32px;">
+                <li style="margin-bottom: 16px;"><i class="fa-solid fa-check" style="color: var(--primary); margin-right: 12px;"></i> Minlərlə yeni xəstəyə çatın</li>
+                <li style="margin-bottom: 16px;"><i class="fa-solid fa-check" style="color: var(--primary); margin-right: 12px;"></i> Rezervasiyanı asanlaşdırın</li>
+                <li><i class="fa-solid fa-check" style="color: var(--primary); margin-right: 12px;"></i> Süni intellekt əsaslı köməkçi <span class="btn-pill" style="padding: 2px 10px; font-size: 10px; background: var(--secondary); color: var(--text-primary); margin-left: 8px;">Yeni</span></li>
+            </ul>
+            <a href="techizatci-resurslari.htm" class="btn-pill btn-primary">Provayder resurslarını öyrənin</a>
+        </div>
+        <div class="provider-right scale-in">
+            <div class="glass-card" style="padding: 0; overflow: hidden; border-radius: 32px;">
+                <img src="assets/pic3.avif" alt="Doctor professional" style="width: 100%; height: auto; display: block;">
+            </div>
+        </div>
+    </section>
+
+<div class="modal-overlay" id="authModal">
+        <div class="modal-card">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div class="tab-menu">
+                <div class="tab active" onclick="switchTab('login')">Daxil ol</div>
+                <div class="tab" onclick="switchTab('register')">Qeydiyyat</div>
+            </div>
+
+            <div id="loginForm" class="form-content active">
+                <div class="input-group"><input type="text" placeholder="Email və ya nömrə"></div>
+                <div class="input-group"><input type="password" placeholder="Şifrə"></div>
+                <button class="btn-auth">Giriş et</button>
+            </div>
+
+            <div id="registerForm" class="form-content">
+                <div class="input-group"><input type="text" placeholder="Ad Soyad"></div>
+                <div class="input-group"><input type="text" placeholder="FIN (7 simvol)"></div>
+                <div class="input-group"><input type="email" placeholder="Email"></div>
+                <div class="input-group"><input type="password" placeholder="Şifrə yaradın"></div>
+                <button class="btn-auth">Hesab yarat</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="insurance-modal" id="insuranceModal">
+        <div class="insurance-card">
+            <div class="insurance-header">
+                <h2>Sığorta Planınızı Tapın</h2>
+                <span class="close-insurance" onclick="closeInsuranceModal()">&times;</span>
+            </div>
+            <div class="insurance-body">
+                <div class="insurance-search">
+                    <input type="text" placeholder="Sığorta planını axtarın...">
+                </div>
+                <div class="insurance-popular-label">Populyar planlar</div>
+                <div class="insurance-plan" onclick="selectInsurance('Paşa Sığorta Komprehensiv')">
+                    <div class="insurance-plan-name">Paşa Sığorta Komprehensiv</div>
+                </div>
+                <div class="insurance-plan" onclick="selectInsurance('Atəşgah Standart Plan')">
+                    <div class="insurance-plan-name">Atəşgah Standart Plan</div>
+                </div>
+                <div class="insurance-plan" onclick="selectInsurance('Qala Sığorta Ailə Paketi')">
+                    <div class="insurance-plan-name">Qala Sığorta Ailə Paketi</div>
+                </div>
+                <div class="insurance-plan" onclick="selectInsurance('Meqa Sığorta Premium')">
+                    <div class="insurance-plan-name">Meqa Sığorta Premium</div>
+                </div>
+                <div class="insurance-plan" onclick="selectInsurance('İcbari Tibbi Sığorta')">
+                    <div class="insurance-plan-name">İcbari Tibbi Sığorta</div>
+                </div>
+                <div class="insurance-plan" onclick="selectInsurance('Beynəlxalq Sığorta')">
+                    <div class="insurance-plan-name">Beynəlxalq Sığorta</div>
+                </div>
+            </div>
+            <div class="insurance-footer">
+                <div class="skip-btn" onclick="closeInsuranceModal()">Sonra Əlavə Et</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="care-type-modal" id="careTypeModal">
+        <div class="care-type-card">
+            <div class="care-type-header">
+                <div class="care-type-progress">
+                    <div class="care-type-progress-bar"></div>
+                </div>
+                <span class="close-care-modal" onclick="closeCareTypeModal()">&times;</span>
+            </div>
+            <h2>Nə növ tibbi xidmət axtarırsınız?</h2>
+
+            <div class="care-option" onclick="selectCareType('physical', this)">
+                <div class="care-option-title">İllik profilaktik müayinə</div>
+                <div class="care-option-desc">Ümumi sağlamlıq vəziyyətini qiymətləndirmək üçün hərtərəfli profilaktik müayinə.</div>
+            </div>
+
+            <div class="care-option" onclick="selectCareType('issue', this)">
+                <div class="care-option-title">Mövcud problem və ya xəstəliyin müalicəsi</div>
+                <div class="care-option-desc">Yeni bir problem üçün müalicə və ya diaqnozu qoyulmuş xəstəliyin davamlı müalicəsi.</div>
+            </div>
+
+            <div class="care-modal-buttons">
+                <button class="btn-cancel" onclick="closeCareTypeModal()">Ləğv et</button>
+                <button class="btn-next" id="nextBtn" onclick="goToSearchResults()" disabled>Sonrakı <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <section class="section-padding fade-up">
+        <h2 class="section-title">Pasientlərimiz nə deyir?</h2>
+        <div class="stagger-cards" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+            <div class="glass-card" style="padding: 32px;">
+                <div style="display: flex; gap: 4px; color: #fbbf24; margin-bottom: 16px;">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
+                <p style="font-style: italic; font-size: 16px; margin-bottom: 24px;">"SmartHealth vasitəsilə həkim tapmaq inanılmaz dərəcədə asan oldu. Sığortamı qəbul edən mütəxəssisi bir neçə saniyəyə tapdım."</p>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 48px; height: 48px; border-radius: 50%; background: #BAE6FD; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--primary);">A</div>
+                    <div>
+                        <h4 style="font-size: 16px;">Anar Məmmədov</h4>
+                        <p style="font-size: 14px; margin: 0;">Bakı, AZ</p>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card" style="padding: 32px;">
+                <div style="display: flex; gap: 4px; color: #fbbf24; margin-bottom: 16px;">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
+                <p style="font-style: italic; font-size: 16px; margin-bottom: 24px;">"Həkimlərin rəylərini oxumaq mənə seçim etməkdə çox kömək etdi. Artıq bütün ailəmiz üçün bu platformanı istifadə edirik."</p>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 48px; height: 48px; border-radius: 50%; background: #A7F3D0; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #059669;">L</div>
+                    <div>
+                        <h4 style="font-size: 16px;">Leyla Quliyeva</h4>
+                        <p style="font-size: 14px; margin: 0;">Sumqayıt, AZ</p>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card" style="padding: 32px;">
+                <div style="display: flex; gap: 4px; color: #fbbf24; margin-bottom: 16px;">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
+                <p style="font-style: italic; font-size: 16px; margin-bottom: 24px;">"Xidmət çox sürətlidir. Randevu götürmək üçün zəng etməyə ehtiyac qalmır, hər şey onlayn və şəffafdır."</p>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 48px; height: 48px; border-radius: 50%; background: #E0E7FF; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--accent);">R</div>
+                    <div>
+                        <h4 style="font-size: 16px;">Rəşad Əliyev</h4>
+                        <p style="font-size: 14px; margin: 0;">Gəncə, AZ</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="premium-footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="#" class="logo"><i class="fa-solid fa-staff-snake"></i> SmartHealth</a>
+                <p>Sizin sığortanızı qəbul edən peşəkar həkimlər. Səhiyyəni hər kəs üçün əlçatan və şəffaf edirik.</p>
+                <div class="footer-socials" style="margin-top: 32px;">
+                    <a href="#" class="social-icon"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Şirkət</h4>
+                <ul>
+                    <li><a href="haqqimizda.htm">Haqqımızda</a></li>
+                    <li><a href="press.htm">Mətbuat</a></li>
+                    <li><a href="karyera.htm">Karyera</a></li>
+                    <li><a href="contact.htm">Əlaqə</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Kəşf Et</h4>
+                <ul>
+                    <li><a href="techizatci-resurslari.htm">Provayder resursları</a></li>
+                    <li><a href="icma-standartlari.htm">İcma qaydaları</a></li>
+                    <li><a href="mexfilik-siyaseti.htm">Məxfilik siyasəti</a></li>
+                    <li><a href="yoxlanmis-reyler.htm">Yoxlanılmış rəylər</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Sığorta</h4>
+                <ul>
+                    <li><a href="providers.htm?insurance=Paşa Sığorta">Paşa Sığorta</a></li>
+                    <li><a href="providers.htm?insurance=Atəşgah">Atəşgah</a></li>
+                    <li><a href="providers.htm?insurance=Qala Sığorta">Qala Sığorta</a></li>
+                    <li><a href="providers.htm?insurance=İcbari Tibbi Sığorta">İcbari Tibbi Sığorta</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 SmartHealth, Inc. Bütün hüquqlar qorunur.</p>
+            <p>Bakı, Azərbaycan</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="assets/modern-redesign.js"></script>
+    <script src="assets/site-navbar.js"></script>
+    <script src="assets/site-footer.js"></script>
+
+    <script>
+        let selectedCareType = null;
+
+        function toggleBrowseModal(e) {
+            e.preventDefault();
+            const modal = document.getElementById('browseModal');
+            modal.classList.toggle('active');
+            document.body.style.overflow = modal.classList.contains('active') ? 'hidden' : '';
+        }
+
+        function closeBrowseModal() {
+            const modal = document.getElementById('browseModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function switchBrowseTab(tabName, tabElement) {
+            document.querySelectorAll('.browse-tab-content').forEach(tab => {
+                tab.style.display = 'none';
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.browse-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabName + 'Tab').style.display = 'block';
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            tabElement.classList.add('active');
+        }
+
+        function openModal() { document.getElementById('authModal').style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+        function closeModal() { document.getElementById('authModal').style.display = 'none'; document.body.style.overflow = '';}
+
+        function openInsuranceModal() {
+            document.getElementById('insuranceModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeInsuranceModal() { 
+            document.getElementById('insuranceModal').classList.remove('active'); 
+            document.body.style.overflow = '';
+        }
+
+        function selectInsurance(insuranceName) {
+            document.getElementById('insuranceInput').value = insuranceName;
+            closeInsuranceModal();
+        }
+
+        function openCareTypeModal() {
+            document.getElementById('careTypeModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCareTypeModal() {
+            document.getElementById('careTypeModal').classList.remove('active');
+            document.body.style.overflow = '';
+            document.querySelectorAll('.care-option').forEach(opt => opt.classList.remove('selected'));
+            document.getElementById('nextBtn').disabled = true;
+            selectedCareType = null;
+        }
+
+        function selectCareType(type, element) {
+            selectedCareType = type;
+            document.querySelectorAll('.care-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function goToSearchResults() {
+            window.location.href = 'search-results.htm?careType=' + selectedCareType;
+        }
+
+        function searchByCity(city) {
+            window.location.href = 'providers.htm?city=' + encodeURIComponent(city);
+        }
+
+        function searchByInsurance(insurance) {
+            window.location.href = 'providers.htm?insurance=' + encodeURIComponent(insurance);
+        }
+
+        function performSearch() {
+            const search = document.getElementById('searchInput').value.trim();
+            const city = document.getElementById('cityInput').value.trim();
+            const insurance = document.getElementById('insuranceInput').value.trim();
+            const url = new URL('search-results.htm', window.location.href);
+
+            if (search) url.searchParams.set('search', search);
+            if (city) url.searchParams.set('city', city);
+            if (insurance) url.searchParams.set('insurance', insurance);
+
+            window.location.href = url.toString();
+        }
+
+        function searchBySpecialty(specialty) {
+            window.location.href = 'search-results.htm?specialty=' + encodeURIComponent(specialty);
+        }
+
+        const searchInput = document.getElementById('searchInput');
+        const cityInput = document.getElementById('cityInput');
+        const insuranceInput = document.getElementById('insuranceInput');
+        const searchSuggestions = document.getElementById('searchSuggestions');
+        const searchOptions = [
+            { label: 'Kardioloq', type: 'İxtisas' },
+            { label: 'Nevroloq', type: 'İxtisas' },
+            { label: 'Terapevt', type: 'İxtisas' },
+            { label: 'Stomatoloq', type: 'İxtisas' },
+            { label: 'Oftalmoloq', type: 'İxtisas' },
+            { label: 'Dr. Azər Hüseynov', type: 'Həkim' },
+            { label: 'Dr. Leyla Qasımova', type: 'Həkim' },
+            { label: 'Dr. Günel Hüseynova', type: 'Həkim' }
+        ];
+
+        function renderSearchSuggestions() {
+            const query = searchInput.value.toLowerCase().trim();
+            const matches = searchOptions
+                .filter(item => !query || item.label.toLowerCase().includes(query) || item.type.toLowerCase().includes(query))
+                .slice(0, 6);
+
+            if (!matches.length || document.activeElement !== searchInput) {
+                searchSuggestions.style.display = 'none';
+                return;
+            }
+
+            searchSuggestions.innerHTML = matches.map(item => `
+                <div class="search-suggestion" data-value="${item.label}">
+                    <strong>${item.label}</strong>
+                    <span>${item.type}</span>
+                </div>
+            `).join('');
+            searchSuggestions.style.display = 'block';
+        }
+
+        [searchInput, cityInput, insuranceInput].forEach(input => {
+            input.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') performSearch();
+            });
+        });
+
+        searchInput.addEventListener('input', renderSearchSuggestions);
+        searchInput.addEventListener('focus', renderSearchSuggestions);
+        searchSuggestions.addEventListener('mousedown', function(event) {
+            const item = event.target.closest('.search-suggestion');
+            if (!item) return;
+            searchInput.value = item.dataset.value;
+            searchSuggestions.style.display = 'none';
+            performSearch();
+        });
+
+        document.querySelector('.insurance-search input').addEventListener('input', function() {
+            const query = this.value.toLowerCase().trim();
+            document.querySelectorAll('.insurance-plan').forEach(plan => {
+                plan.style.display = !query || plan.textContent.toLowerCase().includes(query) ? '' : 'none';
+            });
+        });
+
+        window.addEventListener('click', (e) => {
+            const browseModal = document.getElementById('browseModal');
+            const insuranceModal = document.getElementById('insuranceModal');
+            const careTypeModal = document.getElementById('careTypeModal');
+            const authModal = document.getElementById('authModal');
+            
+            if (e.target === browseModal) closeBrowseModal();
+            if (e.target === insuranceModal) closeInsuranceModal();
+            if (e.target === careTypeModal) closeCareTypeModal();
+            if (e.target === authModal) closeModal();
+            if (!e.target.closest('.search-input')) searchSuggestions.style.display = 'none';
+        });
+        
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                closeBrowseModal();
+                closeInsuranceModal();
+                closeCareTypeModal();
+                closeModal();
+            }
+        });
+
+        function switchTab(type) {
+            const tabs = document.querySelectorAll('.tab');
+            const forms = document.querySelectorAll('.form-content');
+            
+            tabs.forEach(t => t.classList.remove('active'));
+            forms.forEach(f => f.classList.remove('active'));
+
+            if(type === 'login') {
+                tabs[0].classList.add('active');
+                document.getElementById('loginForm').classList.add('active');
+            } else {
+                tabs[1].classList.add('active');
+                document.getElementById('registerForm').classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
+

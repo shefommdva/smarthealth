@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klinika Axtarışı | SmartHealth</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <link rel="stylesheet" href="assets/modern-redesign.css">
+    <link rel="stylesheet" href="assets/site-navbar.css">
+    <link rel="stylesheet" href="assets/site-footer.css">
+    
+    <style>
+        /* Modernized Layout Overrides */
+        .page-head { 
+            padding: 160px 8% 60px; 
+            background: transparent; 
+            position: relative; 
+            overflow: hidden; 
+            text-align: center;
+        }
+
+        .search-container {
+            margin-top: 40px;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .layout { 
+            display: grid; 
+            grid-template-columns: minmax(0, 1fr) 420px; 
+            gap: 32px; 
+            padding: 0 8% 100px; 
+        }
+
+        .results-bar { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 20px 28px; 
+            margin-bottom: 24px; 
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .clinic-list { display: grid; gap: 24px; }
+        
+        .clinic-card { 
+            padding: 32px; 
+            display: grid; 
+            gap: 20px; 
+            transition: transform 0.3s ease;
+        }
+
+        .clinic-card:hover { transform: translateY(-5px); }
+
+        .clinic-type { 
+            color: var(--primary); 
+            font-weight: 700; 
+            font-size: 12px; 
+            text-transform: uppercase; 
+            letter-spacing: 0.1em;
+            margin-bottom: 4px;
+        }
+
+        .clinic-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 12px 24px; 
+            color: var(--text-secondary); 
+            font-size: 15px; 
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .clinic-meta i { color: var(--primary); }
+
+        /* Unified Chips */
+        .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+        .chip { 
+            background: rgba(14, 165, 233, 0.08); 
+            color: var(--primary); 
+            border-radius: 999px; 
+            padding: 6px 16px; 
+            font-size: 13px; 
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .chip:hover { 
+            background: var(--primary); 
+            color: white; 
+        }
+
+        .chip.doctor-chip {
+            background: rgba(99, 102, 241, 0.1);
+            color: #4f46e5;
+        }
+
+        .map-wrap { 
+            position: sticky; 
+            top: 120px; 
+            height: calc(100vh - 180px); 
+            overflow: hidden; 
+            border-radius: 32px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+
+        #clinicMap { width: 100%; height: 100%; z-index: 1; }
+
+        @media (max-width: 1024px) {
+            .layout { grid-template-columns: 1fr; }
+            .map-wrap { position: relative; top: auto; height: 400px; margin-top: 40px; }
+            .page-head { padding-top: 120px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="island-nav-wrapper">
+        <nav class="island-nav">
+            <a href="homepage.htm" class="logo"><i class="fa-solid fa-staff-snake"></i> SmartHealth</a>
+            <div class="nav-links">
+                <a href="#" onclick="toggleBrowseModal(event)">Baxış <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i></a>
+                <a href="help.htm">Kömək</a>
+                <a href="partner-portal.htm">Partner portal</a>
+                <a href="login.htm">Daxil ol</a>
+            </div>
+            <a href="qeydiyyat.htm" class="btn-pill btn-primary">Qeydiyyat</a>
+        </nav>
+    </div>
+
+    <section class="page-head fade-up">
+        <div class="gradient-blob blob-1" style="opacity: 0.15;"></div>
+        <h1 class="hero-title" style="font-size: 42px;">Klinika Axtarışı</h1>
+        <p class="hero-subtitle" style="max-width: 700px; margin: 0 auto;">Klinika adı, rayon və ya sığorta üzrə axtarın. Xəritə üzərindən sizə ən yaxın olan tibbi müəssisəni tapın.</p>
+        
+        <div class="search-container">
+            <div class="glass-panel" style="display: flex; border-radius: 9999px; padding: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.08); flex-wrap: wrap;">
+                <div class="search-input" style="flex: 2; padding: 12px 24px; border-right: 1px solid rgba(0,0,0,0.05); display: flex; align-items: center; min-width: 250px;">
+                    <i class="fa-solid fa-magnifying-glass" style="color: var(--primary);"></i>
+                    <input type="text" id="clinicSearch" placeholder="Klinika, xidmət və ya sığorta..." style="background: transparent; border: none; outline: none; width: 100%; margin-left: 12px; font-weight: 500;">
+                </div>
+                <div class="search-input" style="flex: 1; padding: 12px 24px; display: flex; align-items: center; min-width: 150px;">
+                    <i class="fa-solid fa-location-dot" style="color: var(--primary);"></i>
+                    <select id="cityFilter" style="background: transparent; border: none; outline: none; width: 100%; margin-left: 12px; font-family: inherit; font-weight: 500; cursor: pointer;">
+                        <option value="">Bütün şəhərlər</option>
+                    </select>
+                </div>
+                <button class="btn-pill btn-primary" onclick="applyClinicFilters()" style="margin: 4px; padding: 12px 35px;">Tap</button>
+            </div>
+        </div>
+    </section>
+
+    <main class="layout">
+        <section class="fade-up">
+            <div class="results-bar glass-panel">
+                <span id="resultTitle" style="font-weight: 600; color: var(--text-primary);">Bütün klinikalar</span>
+                <span style="color: var(--text-secondary); font-size: 14px;">
+                    <span id="clinicCount" style="color: var(--primary); font-weight: 700;">0</span> nəticə tapıldı
+                </span>
+            </div>
+
+            <div id="clinicList" class="clinic-list stagger-cards">
+                </div>
+
+            <div id="emptyState" class="empty-state glass-card" style="display:none; padding: 60px; text-align: center;">
+                <i class="fa-solid fa-hospital-circle-xmark" style="font-size: 48px; color: var(--text-secondary); margin-bottom: 20px; opacity: 0.5;"></i>
+                <h3 style="margin-bottom: 10px;">Nəticə tapılmadı</h3>
+                <p style="color: var(--text-secondary);">Axtarış meyarlarını dəyişərək yenidən cəhd edin.</p>
+            </div>
+        </section>
+
+        <aside class="map-wrap glass-card fade-up">
+            <div id="clinicMap"></div>
+        </aside>
+    </main>
+
+    <footer class="premium-footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="homepage.htm" class="logo"><i class="fa-solid fa-staff-snake"></i> SmartHealth</a>
+                <p>Sizin sığortanızı qəbul edən peşəkar həkimlər. Səhiyyəni hər kəs üçün əlçatan və şəffaf edirik.</p>
+                <div class="footer-socials" style="margin-top: 32px;">
+                    <a href="#" class="social-icon"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Şirkət</h4>
+                <ul>
+                    <li><a href="haqqimizda.htm">Haqqımızda</a></li>
+                    <li><a href="press.htm">Mətbuat</a></li>
+                    <li><a href="karyera.htm">Karyera</a></li>
+                    <li><a href="contact.htm">Əlaqə</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Kəşf Et</h4>
+                <ul>
+                    <li><a href="techizatci-resurslari.htm">Provayder resursları</a></li>
+                    <li><a href="icma-standartlari.htm">İcma qaydaları</a></li>
+                    <li><a href="mexfilik-siyaseti.htm">Məxfilik siyasəti</a></li>
+                    <li><a href="yoxlanmis-reyler.htm">Yoxlanılmış rəylər</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Sığorta</h4>
+                <ul>
+                    <li><a href="providers.htm?insurance=Paşa Sığorta">Paşa Sığorta</a></li>
+                    <li><a href="providers.htm?insurance=Atəşgah">Atəşgah</a></li>
+                    <li><a href="providers.htm?insurance=Qala Sığorta">Qala Sığorta</a></li>
+                    <li><a href="providers.htm?insurance=İcbari Tibbi Sığorta">İcbari Tibbi Sığorta</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 SmartHealth, Inc. Bütün hüquqlar qorunur.</p>
+            <p>Bakı, Azərbaycan</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <script src="assets/smarthealth-doctors.js"></script>
+    <script src="assets/smarthealth-clinics.js"></script>
+    <script src="assets/modern-redesign.js"></script>
+    <script src="assets/site-navbar.js"></script>
+    <script src="assets/site-footer.js"></script>
+    <script>
+        // ... (Filtering and Data Logic preserved from original file) ...
+        const clinics = window.SmartHealthClinics || [];
+        const doctors = window.SmartHealthDoctors || [];
+        let filteredClinics = [...clinics];
+        let map;
+        let markers = [];
+
+        function normalize(value) { return String(value || '').toLowerCase().trim(); }
+        function doctorsForClinic(clinic) { return doctors.filter(doctor => clinic.doctors.includes(doctor.id)); }
+
+        function doctorLinks(clinic) {
+            const linkedDoctors = doctorsForClinic(clinic);
+            if (!linkedDoctors.length) return '';
+            return linkedDoctors.map(doctor => `<a class="chip doctor-chip" href="doctor-profile.htm?id=${doctor.id}"><i class="fa-solid fa-user-md" style="font-size:10px; margin-right:5px;"></i>${doctor.name}</a>`).join('');
+        }
+
+        function renderClinics() {
+            const list = document.getElementById('clinicList');
+            const empty = document.getElementById('emptyState');
+            document.getElementById('clinicCount').textContent = filteredClinics.length;
+
+            if (!filteredClinics.length) {
+                list.innerHTML = '';
+                empty.style.display = 'block';
+                return;
+            }
+
+            empty.style.display = 'none';
+            list.innerHTML = filteredClinics.map(clinic => `
+                <article class="clinic-card glass-card">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <div class="clinic-type">${clinic.type}</div>
+                            <h2 style="font-size: 22px; font-weight: 700;">${clinic.name}</h2>
+                        </div>
+                        <i class="fa-solid fa-hospital" style="font-size: 24px; color: var(--primary); opacity: 0.2;"></i>
+                    </div>
+                    <div class="clinic-meta">
+                        <span><i class="fa-solid fa-location-dot"></i>${clinic.city}, ${clinic.district} - ${clinic.address}</span>
+                        <span><i class="fa-solid fa-phone"></i>${clinic.phone}</span>
+                    </div>
+                    
+                    <div style="display:grid; gap:12px;">
+                        <div class="chips">${clinic.services.map(item => `<span class="chip">${item}</span>`).join('')}</div>
+                        <div class="chips">${clinic.insurance.map(item => `<span class="chip" style="background:rgba(0,0,0,0.03); color:var(--text-primary);">${item}</span>`).join('')}</div>
+                        <div class="chips">${doctorLinks(clinic)}</div>
+                    </div>
+
+                    <div class="clinic-actions" style="display:flex; gap:12px; margin-top:10px; border-top: 1px solid rgba(0,0,0,0.05); padding-top:20px;">
+                        <button class="btn-pill btn-ghost" style="flex:1; font-size:14px;" onclick="focusClinic('${clinic.id}')"><i class="fa-solid fa-map-pin"></i> Xəritədə</button>
+                        <a class="btn-pill btn-primary" style="flex:1.5; font-size:14px; text-align:center;" href="providers.htm?clinic=${encodeURIComponent(clinic.name)}"><i class="fa-solid fa-arrow-right"></i> Həkimlərə bax</a>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        // Map Initialization and Filters (Keeping your robust logic)
+        function initCityOptions() {
+            const cityFilter = document.getElementById('cityFilter');
+            [...new Set(clinics.map(clinic => clinic.city))].forEach(city => {
+                cityFilter.insertAdjacentHTML('beforeend', `<option value="${city}">${city}</option>`);
+            });
+        }
+
+        function initMap() {
+            if (!window.L) return;
+            map = L.map('clinicMap').setView([40.4093, 49.2671], 12);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap',
+                maxZoom: 19
+            }).addTo(map);
+            updateMapMarkers();
+        }
+
+        function updateMapMarkers() {
+            if (!map || !window.L) return;
+            markers.forEach(marker => map.removeLayer(marker));
+            markers = filteredClinics.map(clinic => {
+                const marker = L.marker(clinic.coords).addTo(map).bindPopup(`<strong>${clinic.name}</strong><br>${clinic.address}`);
+                marker.clinicId = clinic.id;
+                return marker;
+            });
+            if (markers.length) {
+                map.fitBounds(new L.featureGroup(markers).getBounds().pad(0.15), { maxZoom: 14 });
+            }
+        }
+
+        function focusClinic(id) {
+            const clinic = clinics.find(item => item.id === id);
+            const marker = markers.find(item => item.clinicId === id);
+            if (!clinic) return;
+            if (!map) return;
+            map.setView(clinic.coords, 15);
+            if (marker) marker.openPopup();
+        }
+
+        function applyClinicFilters() {
+            const term = normalize(document.getElementById('clinicSearch').value);
+            const city = document.getElementById('cityFilter').value;
+            filteredClinics = clinics.filter(clinic => {
+                const clinicDoctors = doctorsForClinic(clinic).map(doctor => `${doctor.name} ${doctor.specialty}`).join(' ');
+                const target = normalize(`${clinic.name} ${clinic.type} ${clinic.city} ${clinic.district} ${clinic.address} ${clinic.phone} ${clinic.services.join(' ')} ${clinic.insurance.join(' ')} ${clinicDoctors}`);
+                return (!term || target.includes(term)) && (!city || clinic.city === city);
+            });
+            document.getElementById('resultTitle').textContent = term || city ? 'Axtarış nəticələri' : 'Bütün klinikalar';
+            renderClinics();
+            updateMapMarkers();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initCityOptions();
+            renderClinics();
+            document.getElementById('clinicSearch').addEventListener('input', applyClinicFilters);
+            document.getElementById('clinicSearch').addEventListener('keydown', event => {
+                if (event.key === 'Enter') applyClinicFilters();
+            });
+            document.getElementById('cityFilter').addEventListener('change', applyClinicFilters);
+            initMap();
+        });
+    </script>
+</body>
+</html>

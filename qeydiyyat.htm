@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qeydiyyat | SmartHealth</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link rel="stylesheet" href="assets/site-navbar.css">
+    <link rel="stylesheet" href="assets/site-footer.css">
+    <link rel="stylesheet" href="assets/modern-redesign.css">
+    <style>
+        .auth-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 20px;
+            background: radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.08), transparent 40%);
+        }
+        .auth-card-modern {
+            width: 100%; max-width: 480px; padding: 48px;
+            background: white; border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+        .input-group { margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
+        .input-group i { font-size: 20px; color: #0ea5e9; width: 25px; text-align: center; }
+        .auth-input { flex: 1; padding: 14px 18px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); background: #f9fafb; font-size: 15px; }
+        .auth-input:focus { outline: none; border-color: #0ea5e9; background: white; }
+        .btn-primary { width: 100%; padding: 16px; background: #0ea5e9; color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; }
+        #authMessage { padding: 12px; border-radius: 10px; font-size: 13px; margin-bottom: 20px; display: none; text-align: center; }
+        #authMessage.error { background: #fef2f2; color: #ef4444; display: block; }
+        #authMessage.success { background: #f0fdf4; color: #10b981; display: block; }
+    </style>
+</head>
+<body>
+
+    <div class="island-nav-wrapper">
+        <nav class="island-nav">
+            <a href="homepage.htm" class="logo"><i class="fa-solid fa-staff-snake"></i> SmartHealth</a>
+            <div class="nav-links">
+                <a href="login.htm" class="btn-pill btn-ghost">Giriş et</a>
+            </div>
+        </nav>
+    </div>
+
+    <main class="auth-page">
+        <div class="auth-card-modern">
+            <div style="background: #0ea5e9; width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: white; margin-bottom: 24px;">
+                <i class="fa-solid fa-user-plus"></i>
+            </div>
+            <h1 style="font-size: 28px; font-weight: 800; margin-bottom: 8px;">Hesab yarat</h1>
+            <p style="color: #64748b; margin-bottom: 32px;">Tibbi xidmətlərinizi idarə etməyə başlayın.</p>
+
+            <div id="authMessage"></div>
+
+            <form id="registerForm">
+                <div class="input-group">
+                    <i class="fa-regular fa-user"></i>
+                    <input id="name" type="text" class="auth-input" placeholder="Ad və soyad" required>
+                </div>
+                <div class="input-group">
+                    <i class="fa-regular fa-id-card"></i>
+                    <input id="fin" type="text" class="auth-input" placeholder="FIN (7 simvol)" maxlength="7" required>
+                </div>
+                <div class="input-group">
+                    <i class="fa-regular fa-envelope"></i>
+                    <input id="email" type="email" class="auth-input" placeholder="Email" required>
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input id="password" type="password" class="auth-input" placeholder="Şifrə" required>
+                </div>
+                <button type="submit" id="registerBtn" class="btn-primary">Qeydiyyatı tamamla</button>
+            </form>
+            <p style="text-align: center; margin-top: 24px; font-size: 14px; color: #64748b;">
+                Hesabınız var? <a href="login.htm" style="color: #0ea5e9; font-weight: 700; text-decoration: none;">Daxil olun</a>
+            </p>
+        </div>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCDo3MFtj9qYwEbKRwKu5v7SBhmpk2eyIE",
+            authDomain: "smarthealth-d9c8b.firebaseapp.com",
+            projectId: "smarthealth-d9c8b",
+            storageBucket: "smarthealth-d9c8b.firebasestorage.app",
+            messagingSenderId: "908166581668",
+            appId: "1:908166581668:web:57c6372500cd5da6478531"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const name = document.getElementById('name').value.trim();
+            const fin = document.getElementById('fin').value.trim();
+            const msg = document.getElementById('authMessage');
+            const btn = document.getElementById('registerBtn');
+
+            msg.className = ''; msg.textContent = '';
+            if(fin.length !== 7) { msg.className = 'error'; msg.textContent = 'FIN 7 simvol olmalıdır.'; return; }
+
+            btn.disabled = true; btn.textContent = 'Hesab yaradılır...';
+
+            try {
+                const cred = await auth.createUserWithEmailAndPassword(email, password);
+                await cred.user.updateProfile({ displayName: name });
+                
+                // Learn from provided script: Initialize detailed user data
+                localStorage.setItem('userData_' + cred.user.uid, JSON.stringify({ fullName: name, appointments: [], labResults: [] }));
+                
+                msg.className = 'success';
+                msg.textContent = 'Uğurlu! Giriş səhifəsinə yönləndirilirsiniz...';
+                setTimeout(() => window.location.replace('login.htm'), 1500);
+            } catch (err) {
+                msg.className = 'error';
+                msg.textContent = err.code === 'auth/email-already-in-use' ? 'Bu email artıq mövcuddur.' : 'Xəta baş verdi.';
+                btn.disabled = false; btn.textContent = 'Qeydiyyatı tamamla';
+            }
+        });
+    </script>
+    <script src="assets/site-navbar.js"></script>
+</body>
+</html>

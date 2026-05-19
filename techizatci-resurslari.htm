@@ -1,0 +1,226 @@
+﻿<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provayder Resursları | SmartHealth</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <link rel="stylesheet" href="assets/modern-redesign.css">
+    
+        <link rel="stylesheet" href="assets/site-navbar.css">
+    <link rel="stylesheet" href="assets/site-footer.css">
+<style>
+        body.resources-page::before {
+            display: none;
+        }
+
+        .resources-hero {
+            padding: 140px 8% 48px;
+            background: #f8fafc;
+            text-align: center;
+        }
+
+        .resources-container {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 48px;
+            padding: 0 8% 90px;
+            align-items: start;
+        }
+
+        /* Side Nav Sticky */
+        .resource-nav {
+            position: sticky;
+            top: 120px;
+            height: fit-content;
+        }
+
+        .nav-group-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #94a3b8;
+            font-weight: 800;
+            margin-bottom: 16px;
+            margin-top: 32px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            color: #64748b;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s;
+            border-bottom: 1px solid transparent;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary);
+        }
+
+        /* Resource Cards */
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .resource-card {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 220px;
+            opacity: 1 !important;
+            background: #fff !important;
+            border: 1px solid rgba(226, 232, 240, 0.9) !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            transition: transform 0.3s ease;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .resource-card.motion-reveal,
+        .resource-card.fade-up {
+            opacity: 1 !important;
+        }
+
+        .resource-category {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--primary);
+            background: rgba(14, 165, 233, 0.1);
+            padding: 4px 10px;
+            border-radius: 6px;
+            width: fit-content;
+            margin-bottom: 16px;
+        }
+
+        .resource-icon {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #334155;
+        }
+
+        .download-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            margin-top: auto;
+        }
+
+        @media (max-width: 1024px) {
+            .resources-container { grid-template-columns: 1fr; }
+            .resource-nav { display: none; }
+        }
+    </style>
+</head>
+<body class="resources-page">
+
+    <div class="island-nav-wrapper">
+        <nav class="island-nav">
+            <a href="homepage.htm" class="logo"><i class="fa-solid fa-staff-snake"></i> SmartHealth</a>
+            <div class="nav-links">
+                <a href="partner-portal.htm">Tərəfdaşlıq</a>
+                <a href="help.htm">Dəstək</a>
+            </div>
+            <a href="login.htm" class="btn-pill btn-primary">Həkim Girişi</a>
+        </nav>
+    </div>
+
+    <header class="resources-hero">
+        <h1 style="font-size: 42px; font-weight: 800; margin-bottom: 16px;">Provayder Resursları</h1>
+        <p style="color: #64748b; max-width: 600px; margin: 0 auto;">Klinik fəaliyyətinizi optimallaşdırmaq və xidmət keyfiyyətini artırmaq üçün lazım olan bütün sənədlər və alətlər.</p>
+        
+        <div style="background: white; padding: 12px 24px; border-radius: 99px; display: flex; align-items: center; gap: 15px; max-width: 500px; margin: 40px auto 0; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+            <i class="fa-solid fa-magnifying-glass" style="color: #94a3b8;"></i>
+            <input type="text" placeholder="Resurs axtarın (məs: İcbari sığorta qaydaları)" style="border: none; outline: none; width: 100%; font-weight: 500;">
+        </div>
+    </header>
+
+    <main class="resources-container">
+        <aside class="resource-nav">
+            <div class="nav-group-title">Kateqoriyalar</div>
+            <a href="#clinical" class="nav-link active"><i class="fa-solid fa-stethoscope"></i> Klinik Təlimatlar</a>
+            <a href="#admin" class="nav-link"><i class="fa-solid fa-file-invoice"></i> Admin və Ödəniş</a>
+            <a href="#tech" class="nav-link"><i class="fa-solid fa-laptop-code"></i> Texnoloji İnteqrasiya</a>
+            <a href="#legal" class="nav-link"><i class="fa-solid fa-scale-balanced"></i> Hüquqi Sənədlər</a>
+        </aside>
+
+        <section class="resource-content">
+            <div class="resource-grid">
+                <div class="glass-card resource-card fade-up">
+                    <div>
+                        <div class="resource-category">Klinik</div>
+                        <i class="fa-solid fa-book-medical resource-icon"></i>
+                        <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">Diaqnostik Protokollar 2026</h3>
+                        <p style="font-size: 13px; color: #64748b;">Yenilənmiş kardiologiya və nevrologiya standartları.</p>
+                    </div>
+                    <a href="#" class="download-btn">PDF Yüklə <i class="fa-solid fa-arrow-down-long"></i></a>
+                </div>
+
+                <div class="glass-card resource-card fade-up">
+                    <div>
+                        <div class="resource-category">Admin</div>
+                        <i class="fa-solid fa-shield-halved resource-icon"></i>
+                        <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">İcbari Sığorta Portalı</h3>
+                        <p style="font-size: 13px; color: #64748b;">Xəstə qeydiyyatı və ödəniş sorğularının idarə edilməsi bələdçisi.</p>
+                    </div>
+                    <a href="#" class="download-btn">Bələdçiyə bax <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <div class="glass-card resource-card fade-up">
+                    <div>
+                        <div class="resource-category">Texniki</div>
+                        <i class="fa-solid fa-code resource-icon"></i>
+                        <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">API Sənədləri v2.4</h3>
+                        <p style="font-size: 13px; color: #64748b;">Klinika idarəetmə sistemlərinin SmartHealth ilə inteqrasiyası.</p>
+                    </div>
+                    <a href="#" class="download-btn">Sənədləri aç <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                </div>
+
+                <div class="glass-card resource-card fade-up">
+                    <div>
+                        <div class="resource-category">Hüquqi</div>
+                        <i class="fa-solid fa-user-shield resource-icon"></i>
+                        <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">Məxfilik Siyasəti (GDPR)</h3>
+                        <p style="font-size: 13px; color: #64748b;">Həkimlərin xəstə məlumatları ilə rəftar qaydaları.</p>
+                    </div>
+                    <a href="#" class="download-btn">PDF Yüklə <i class="fa-solid fa-arrow-down-long"></i></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.querySelectorAll(".fade-up").forEach(el => {
+            el.style.opacity = "1";
+            el.style.transform = "none";
+        });
+
+        // Toggle active state for nav
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.onclick = (e) => {
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            };
+        });
+    </script>
+    <script src="assets/site-navbar.js"></script>
+    <script src="assets/site-footer.js"></script>
+</body>
+</html>

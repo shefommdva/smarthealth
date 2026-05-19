@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karyera | SmartHealth</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <link rel="stylesheet" href="assets/modern-redesign.css">
+    
+        <link rel="stylesheet" href="assets/site-navbar.css">
+    <link rel="stylesheet" href="assets/site-footer.css">
+<style>
+        .career-hero {
+            padding: 180px 8% 100px;
+            text-align: center;
+            background: radial-gradient(circle at bottom left, rgba(14, 165, 233, 0.05), transparent 50%);
+        }
+
+        .job-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 24px;
+            padding: 40px 8% 100px;
+        }
+
+        .job-card {
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px solid rgba(0,0,0,0.03);
+            transition: all 0.3s ease;
+        }
+
+        .job-card:hover {
+            border-color: var(--primary-light);
+            transform: translateY(-8px);
+        }
+
+        .job-tag {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--primary);
+            background: rgba(14, 165, 233, 0.08);
+            padding: 4px 12px;
+            border-radius: 99px;
+            display: inline-block;
+            margin-bottom: 16px;
+        }
+
+        .culture-section {
+            background: var(--surface);
+            padding: 100px 8%;
+            border-radius: 60px;
+            margin: 0 4% 100px;
+        }
+
+        .perks-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .perk-item i {
+            font-size: 28px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .perks-grid { grid-template-columns: 1fr; }
+            .career-hero { padding: 140px 8% 60px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="island-nav-wrapper">
+        <nav class="island-nav">
+            <a href="homepage.htm" class="logo"><i class="fa-solid fa-staff-snake"></i> SmartHealth</a>
+            <div class="nav-links">
+                <a href="haqqimizda.htm">Haqqımızda</a>
+                <a href="doctors.htm">Həkimlər</a>
+                <a href="help.htm">Yardım</a>
+            </div>
+            <a href="login.htm" class="btn-pill btn-primary">Giriş</a>
+        </nav>
+    </div>
+
+    <section class="career-hero fade-up">
+        <div class="gradient-blob blob-1"></div>
+        <h1 class="hero-title" style="font-size: clamp(36px, 5vw, 56px);">Səhiyyənin gələcəyini <br><span class="text-gradient">birlikdə quraq</span></h1>
+        <p class="hero-subtitle" style="max-width: 650px; margin: 30px auto;">Biz rəqəmsal səhiyyə inqilabı edirik. Sən də bu missiyanın bir hissəsi olmaq istəyirsən?</p>
+        <a href="#vacancies" class="btn-pill btn-primary">Vakansiyalara bax</a>
+    </section>
+
+    <section class="culture-section fade-up">
+        <div style="text-align: center; max-width: 800px; margin: 0 auto;">
+            <h2 style="font-size: 36px; font-weight: 800;">Niyə SmartHealth?</h2>
+            <p style="color: var(--text-secondary); margin-top: 16px;">Bizdə işləmək sadəcə kod yazmaq və ya xəstə qəbulu deyil. Bu, minlərlə insanın həyatına birbaşa təsir etməkdir.</p>
+        </div>
+
+        <div class="perks-grid">
+            <div class="perk-item">
+                <i class="fa-solid fa-rocket"></i>
+                <h4 style="margin-bottom: 12px;">Sürətli İnkişaf</h4>
+                <p style="font-size: 15px; color: var(--text-secondary);">Hər gün yeni texnologiyalarla işləmək və professional olaraq böyümək imkanı.</p>
+            </div>
+            <div class="perk-item">
+                <i class="fa-solid fa-heart-pulse"></i>
+                <h4 style="margin-bottom: 12px;">Tam Sığorta</h4>
+                <p style="font-size: 15px; color: var(--text-secondary);">Komanda üzvlərimizin sağlamlığı bizə hər şeydən önəmlidir.</p>
+            </div>
+            <div class="perk-item">
+                <i class="fa-solid fa-laptop-code"></i>
+                <h4 style="margin-bottom: 12px;">Hibrid İş Rejimi</h4>
+                <p style="font-size: 15px; color: var(--text-secondary);">İstər ofisdən, istərsə də evdən — iş-həyat balansını sən tənzimlə.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="vacancies" style="padding: 0 8% 40px;">
+        <h2 class="fade-up" style="font-size: 32px; font-weight: 800; margin-bottom: 40px; text-align: center;">Açıq vakansiyalar</h2>
+        <div class="job-grid stagger-cards">
+            
+            <div class="job-card glass-card">
+                <div>
+                    <span class="job-tag">Engineering</span>
+                    <h3 style="font-size: 20px; margin-bottom: 8px;">Senior Mobile Developer</h3>
+                    <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 24px;"><i class="fa-solid fa-location-dot"></i> Bakı / Remote</p>
+                </div>
+                <a href="contact.htm" class="btn-pill btn-ghost" style="text-align: center;">Müraciət et</a>
+            </div>
+
+            <div class="job-card glass-card">
+                <div>
+                    <span class="job-tag">Product</span>
+                    <h3 style="font-size: 20px; margin-bottom: 8px;">Product Designer (UX/UI)</h3>
+                    <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 24px;"><i class="fa-solid fa-location-dot"></i> Bakı (Ofis)</p>
+                </div>
+                <a href="contact.htm" class="btn-pill btn-ghost" style="text-align: center;">Müraciət et</a>
+            </div>
+
+            <div class="job-card glass-card">
+                <div>
+                    <span class="job-tag">Marketing</span>
+                    <h3 style="font-size: 20px; margin-bottom: 8px;">Content Strategist</h3>
+                    <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 24px;"><i class="fa-solid fa-location-dot"></i> Bakı / Hibrid</p>
+                </div>
+                <a href="contact.htm" class="btn-pill btn-ghost" style="text-align: center;">Müraciət et</a>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="premium-footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="homepage.htm" class="logo"><i class="fa-solid fa-staff-snake"></i> SmartHealth</a>
+                <p>Gələcəyin səhiyyəsini yaradan komandaya qoşul.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Şirkət</h4>
+                <ul>
+                    <li><a href="haqqimizda.htm">Haqqımızda</a></li>
+                    <li><a href="press.htm">Mətbuat</a></li>
+                    <li><a href="contact.htm">Əlaqə</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 SmartHealth. Bakı, Azərbaycan</p>
+        </div>
+    </footer>
+
+    <script src="assets/modern-redesign.js"></script>
+    <script src="assets/site-navbar.js"></script>
+    <script src="assets/site-footer.js"></script>
+</body>
+</html>

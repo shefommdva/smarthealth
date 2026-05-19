@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mütəxəssis Axtarışı | SmartHealth</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  
+  <link rel="stylesheet" href="assets/modern-redesign.css">
+  <link rel="stylesheet" href="assets/site-navbar.css">
+  <link rel="stylesheet" href="assets/site-footer.css">
+  
+  <style>
+    .search-hero {
+        padding: 160px 8% 60px;
+        text-align: center;
+        background: linear-gradient(180deg, rgba(14, 165, 233, 0.05) 0%, transparent 100%);
+    }
+
+    .filter-bar {
+        display: grid;
+        grid-template-columns: 1fr 220px 220px auto;
+        gap: 16px;
+        max-width: 1000px;
+        margin: 40px auto 0;
+        border-radius: 15px;
+        padding: 12px;
+    }
+
+    .search-input-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .search-input-wrap i {
+        position: absolute;
+        left: 20px;
+        color: var(--primary);
+        opacity: 0.6;
+    }
+
+    .modern-input {
+        width: 100%;
+        padding: 16px 20px 16px 50px;
+        border-radius: 18px;
+        border: 1px solid rgba(0,0,0,0.05);
+        background: white;
+        font-size: 15px;
+        transition: all 0.3s;
+    }
+
+    .modern-input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 10px 25px rgba(14, 165, 233, 0.1);
+    }
+
+    .results-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 32px;
+        padding: 60px 8% 100px;
+    }
+
+    .doctor-card-modern {
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .doctor-card-modern:hover {
+        transform: translateY(-10px);
+    }
+
+    .card-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 35px;
+        object-fit: cover;
+        margin-bottom: 20px;
+        border: 4px solid white;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    }
+
+    .rating-badge {
+        background: #fffbeb;
+        color: #f59e0b;
+        padding: 4px 12px;
+        border-radius: 99px;
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    .specialty-label {
+        color: var(--primary);
+        font-weight: 600;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+    }
+
+    .card-meta {
+        display: flex;
+        gap: 20px;
+        margin: 20px 0;
+        padding: 15px 0;
+        border-top: 1px solid rgba(0,0,0,0.05);
+        width: 100%;
+        justify-content: center;
+    }
+
+    .meta-item { font-size: 13px; color: var(--text-secondary); }
+    .meta-item strong { display: block; color: var(--text-primary); font-size: 15px; }
+
+    /* Modal Styling for Doctor Preview */
+    .modern-modal {
+        backdrop-filter: blur(15px);
+        background: rgba(15, 23, 42, 0.2);
+    }
+
+    @media (max-width: 1024px) {
+        .filter-bar { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+    <div class="island-nav-wrapper">
+        <nav class="island-nav">
+            <a href="homepage.htm" class="logo"><i class="fa-solid fa-staff-snake"></i> SmartHealth</a>
+            <div class="nav-links">
+                <a href="clinics.htm">Klinikalar</a>
+                <a href="help.htm">Yardım</a>
+            </div>
+            <a href="qeydiyyat.htm" class="btn-pill btn-primary">Qeydiyyat</a>
+        </nav>
+    </div>
+
+    <section class="search-hero fade-up">
+        <div class="gradient-blob blob-1"></div>
+        <h1 class="hero-title" style="font-size: 48px;">Mütəxəssis tapın</h1>
+        <p class="hero-subtitle">Sizin sığortanızı qəbul edən 500+ peşəkar həkim bir toxunuşda.</p>
+
+        <div class="filter-bar glass-panel">
+            <div class="search-input-wrap">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="mainSearch" class="modern-input" placeholder="Həkim adı və ya ixtisas...">
+            </div>
+            <select id="specFilter" class="modern-input" style="padding-left: 20px;">
+                <option value="">Bütün ixtisaslar</option>
+                <option value="Kardioloq">Kardioloq</option>
+                <option value="Stomatoloq">Stomatoloq</option>
+                <option value="Nevroloq">Nevroloq</option>
+            </select>
+            <select id="insurFilter" class="modern-input" style="padding-left: 20px;">
+                <option value="">Sığorta seçin</option>
+                <option value="Paşa Sığorta">Paşa Sığorta</option>
+                <option value="Atəşgah">Atəşgah</option>
+            </select>
+            <button class="btn-pill btn-primary" onclick="filterDoctors()">Axtar</button>
+        </div>
+    </section>
+
+    <main id="doctorResults" class="results-grid stagger-cards">
+        </main>
+
+    <div id="docModal" class="modern-modal" style="display:none; position:fixed; inset:0; z-index:1000; align-items:center; justify-content:center; padding:20px;">
+        <div class="glass-card" style="max-width: 600px; width:100%; padding:40px; position:relative;">
+            <button onclick="closeModal()" style="position:absolute; top:20px; right:20px; background:none; border:none; font-size:20px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <footer class="premium-footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="homepage.htm" class="logo"><i class="fa-solid fa-staff-snake"></i> SmartHealth</a>
+                <p>© 2026 SmartHealth. Bütün hüquqlar qorunur.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/smarthealth-doctors.js"></script>
+    <script src="assets/modern-redesign.js"></script>
+    <script src="assets/site-navbar.js"></script>
+    <script src="assets/site-footer.js"></script>
+    <script>
+        const resultsContainer = document.getElementById('doctorResults');
+        
+        function renderDoctors(list) {
+            resultsContainer.innerHTML = list.map((doc, index) => `
+                <div class="doctor-card-modern glass-card">
+                    <div class="rating-badge"><i class="fa-solid fa-star"></i> 4.9</div>
+                    <img src="${doc.image}" alt="${doc.name}" class="card-avatar">
+                    <span class="specialty-label">${doc.specialty}</span>
+                    <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 5px;">${doc.name}</h3>
+                    
+                    <div class="card-meta">
+                        <div class="meta-item">Təcrübə <strong>${doc.experience} il</strong></div>
+                        <div class="meta-item">Qiymət <strong>${doc.price}₼</strong></div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; width: 100%;">
+                        <button onclick="openDocModal(${index})" class="btn-pill btn-ghost" style="flex: 1; font-size: 13px;">Profil</button>
+                        <a href="reservation.htm?id=${doc.id}" class="btn-pill btn-primary" style="flex: 1; font-size: 13px; text-align: center;">Yazıl</a>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Re-trigger entrance animation
+            gsap.from(".doctor-card-modern", {
+                opacity: 0,
+                y: 30,
+                stagger: 0.1,
+                duration: 0.8,
+                ease: "power2.out"
+            });
+        }
+
+        function filterDoctors() {
+            const query = document.getElementById('mainSearch').value.toLowerCase();
+            const spec = document.getElementById('specFilter').value;
+            const ins = document.getElementById('insurFilter').value;
+            
+            const filtered = SmartHealthDoctors.filter(d => {
+                const matchesSearch = d.name.toLowerCase().includes(query) || d.specialty.toLowerCase().includes(query);
+                const matchesSpec = !spec || d.specialty === spec;
+                const matchesIns = !ins || d.insurance.includes(ins);
+                return matchesSearch && matchesSpec && matchesIns;
+            });
+            renderDoctors(filtered);
+        }
+
+        function openDocModal(idx) {
+            const doc = SmartHealthDoctors[idx];
+            document.getElementById('modalContent').innerHTML = `
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <img src="${doc.image}" style="width: 100px; height: 100px; border-radius: 30px; margin-bottom: 15px;">
+                    <h2>${doc.name}</h2>
+                    <p style="color: var(--primary); font-weight: 600;">${doc.specialty}</p>
+                </div>
+                <div style="margin-bottom: 30px;">
+                    <h4 style="margin-bottom: 10px;">Haqqında</h4>
+                    <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.6;">${doc.bio}</p>
+                </div>
+                <a href="doctor-profile.htm?id=${doc.id}" class="btn-pill btn-primary" style="width: 100%; text-align: center;">Tam Profilə Bax</a>
+            `;
+            document.getElementById('docModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('docModal').style.display = 'none';
+        }
+
+        // Initial Load
+        window.addEventListener('DOMContentLoaded', () => {
+            renderDoctors(SmartHealthDoctors);
+        });
+    </script>
+</body>
+</html>

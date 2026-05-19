@@ -1,0 +1,270 @@
+﻿<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartHealth | Şəxsi Kabinet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/site-navbar.css">
+    <style>
+        :root {
+            --primary: #0ea5e9;
+            --sidebar-bg: #ffffff;
+            --main-bg: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --accent-green: #10b981;
+            --border: #e2e8f0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--main-bg); color: var(--text-dark); display: flex; min-height: 100vh; overflow-x: hidden; }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .brand-logo { font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 40px; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+
+        .nav-menu { flex-grow: 1; list-style: none; }
+        .nav-item { 
+            padding: 12px 15px; border-radius: 12px; margin-bottom: 8px; cursor: pointer;
+            display: flex; align-items: center; gap: 12px; color: var(--text-muted); font-weight: 500; transition: all 0.2s;
+            border: none; background: none; width: 100%; text-align: left;
+        }
+        .nav-item.active, .nav-item:hover { background: #f0f9ff; color: var(--primary); }
+        .nav-item i { font-size: 18px; width: 25px; text-align: center; }
+
+        /* --- MAIN CONTENT --- */
+        .main-wrapper { margin-left: 260px; width: calc(100% - 260px); padding: 40px; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        .user-pill { display: flex; align-items: center; gap: 15px; background: white; padding: 8px 20px; border-radius: 50px; border: 1px solid var(--border); }
+
+        /* --- DASHBOARD ELEMENTS --- */
+        .dashboard-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: white; padding: 20px; border-radius: 20px; border: 1px solid var(--border); text-align: center; }
+        .stat-card h3 { font-size: 28px; color: var(--primary); margin-bottom: 5px; }
+        .stat-card p { font-size: 13px; color: var(--text-muted); font-weight: 600; }
+
+        .content-card { background: white; border-radius: 24px; padding: 30px; border: 1px solid var(--border); margin-bottom: 25px; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .card-title { font-size: 19px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+
+        /* --- FORMS --- */
+        .profile-form { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .field-group { display: flex; flex-direction: column; gap: 8px; }
+        .field-group label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
+        .field-group input, .field-group select { padding: 12px 15px; border-radius: 10px; border: 1px solid var(--border); background: #f8fafc; font-size: 14px; }
+        .field-group.full { grid-column: span 2; }
+
+        .btn-action { background: var(--primary); color: white; border: none; padding: 12px 25px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .btn-action:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        .view-section { display: none; animation: fadeIn 0.3s ease; }
+        .view-section.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Empty States */
+        .empty-state { text-align: center; padding: 40px; color: var(--text-muted); }
+        .empty-state i { font-size: 40px; margin-bottom: 15px; color: var(--border); }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="brand-logo" onclick="switchView('icmal')"><i class="fa-solid fa-staff-snake"></i> SmartHealth</div>
+        <nav class="nav-menu">
+            <button class="nav-item active" onclick="switchView('icmal', this)"><i class="fa-solid fa-house"></i> İcmal</button>
+            <button class="nav-item" onclick="switchView('profile', this)"><i class="fa-solid fa-user-circle"></i> Profil</button>
+            <button class="nav-item" onclick="switchView('randevular', this)"><i class="fa-solid fa-calendar"></i> Randevular</button>
+            <button class="nav-item" onclick="switchView('analizler', this)"><i class="fa-solid fa-microscope"></i> Analizlər</button>
+            <button class="nav-item" onclick="switchView('reseptler', this)"><i class="fa-solid fa-pills"></i> Reseptlər</button>
+            <button class="nav-item" onclick="switchView('sigorta', this)"><i class="fa-solid fa-shield"></i> Sığorta</button>
+        </nav>
+        <button onclick="logout()" class="nav-item" style="margin-top: auto; color: #ef4444;">
+            <i class="fa-solid fa-right-from-bracket"></i> Çıxış
+        </button>
+    </aside>
+
+    <main class="main-wrapper">
+        <div class="top-bar">
+            <h2 style="font-size: 26px; font-weight: 800;">Xoş gəlmisiniz, <span id="displayUserName">...</span>!</h2>
+            <div class="user-pill">
+                <span id="userEmailHead" style="font-size: 14px; font-weight: 600;">...</span>
+                <div id="userInitial" style="width: 35px; height: 35px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">U</div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="stat-card">
+                <h3 id="statRandevu">0</h3>
+                <p>Randevular</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="statAnaliz">0</h3>
+                <p>Analizlər</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="statResept">0</h3>
+                <p>Reseptlər</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="statHekim">0</h3>
+                <p>Həkimlərim</p>
+            </div>
+        </div>
+
+        <section id="view-icmal" class="view-section active">
+            <div class="content-card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Son Randevular</div>
+                    <button class="btn-action" onclick="switchView('randevular')">Hamısı</button>
+                </div>
+                <div id="recentAptList">
+                    <div class="empty-state"><i class="fa-solid fa-calendar-xmark"></i><p>Yaxın vaxtda görüşünüz yoxdur</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-profile" class="view-section">
+            <div class="content-card">
+                <div class="card-title" style="margin-bottom:25px;"><i class="fa-solid fa-id-card"></i> Şəxsi və Tibbi Məlumatlar</div>
+                <form id="profileUpdateForm" class="profile-form">
+                    <div class="field-group"><label>Ad Soyad</label><input type="text" id="pName"></div>
+                    <div class="field-group"><label>Doğum Tarixi</label><input type="date" id="pBirth"></div>
+                    <div class="field-group"><label>Telefon</label><input type="tel" id="pPhone"></div>
+                    <div class="field-group">
+                        <label>Qan Qrupu</label>
+                        <select id="pBlood">
+                            <option value="">Seçin</option>
+                            <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+                            <option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
+                        </select>
+                    </div>
+                    <div class="field-group"><label>Vəzn (kq)</label><input type="number" id="pWeight"></div>
+                    <div class="field-group"><label>Boy (sm)</label><input type="number" id="pHeight"></div>
+                    <div class="field-group full"><label>Ünvan</label><input type="text" id="pAddress"></div>
+                    <div class="field-group full" style="text-align: right; margin-top: 15px;">
+                        <button type="submit" class="btn-action">Dəyişiklikləri Saxla</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section id="view-sigorta" class="view-section">
+            <div class="content-card">
+                <div class="card-title"><i class="fa-solid fa-shield-heart"></i> Sığorta Planı</div>
+                <div style="margin-top:20px; padding:20px; background:#f0f9ff; border-radius:15px; border:1px solid #bae6fd;">
+                    <p style="font-weight:700; color:var(--primary);">Aktiv Sığorta:</p>
+                    <h2 id="insName" style="margin:10px 0;">İcbari Tibbi Sığorta</h2>
+                    <p style="font-size:14px; color:var(--text-muted);">Status: <span style="color:var(--accent-green); font-weight:700;">Aktiv</span></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-randevular" class="view-section"><div class="content-card"><h3>Randevularım</h3><div class="empty-state">Məlumat yoxdur</div></div></section>
+        <section id="view-analizler" class="view-section"><div class="content-card"><h3>Analiz Nəticələri</h3><div class="empty-state">Nəticə tapılmadı</div></div></section>
+        <section id="view-reseptler" class="view-section"><div class="content-card"><h3>Reseptlərim</h3><div class="empty-state">Resept yoxdur</div></div></section>
+
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCDo3MFtj9qYwEbKRwKu5v7SBhmpk2eyIE",
+            authDomain: "smarthealth-d9c8b.firebaseapp.com",
+            projectId: "smarthealth-d9c8b",
+            storageBucket: "smarthealth-d9c8b.firebasestorage.app",
+            messagingSenderId: "908166581668",
+            appId: "1:908166581668:web:57c6372500cd5da6478531"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // 1. Navigation Controller
+        function switchView(viewId, element) {
+            document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
+            document.getElementById('view-' + viewId).classList.add('active');
+            
+            if(element) {
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                element.classList.add('active');
+            }
+        }
+
+        // 2. Load Data from your previous script structure
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                let userData = JSON.parse(localStorage.getItem('userData_' + user.uid));
+                if (!userData) {
+                    userData = {
+                        fullName: user.displayName || "İstifadəçi",
+                        birthDate: '', phone: '', address: '', bloodType: '', weight: '', height: '',
+                        appointments: [], labResults: [], prescriptions: [], savedDoctors: []
+                    };
+                    localStorage.setItem('userData_' + user.uid, JSON.stringify(userData));
+                }
+                syncUI(user, userData);
+            } else {
+                window.location.href = 'login.htm';
+            }
+        });
+
+        function syncUI(user, data) {
+            // Header
+            document.getElementById('displayUserName').textContent = data.fullName;
+            document.getElementById('userInitial').textContent = data.fullName.charAt(0).toUpperCase();
+            document.getElementById('userEmailHead').textContent = user.email;
+
+            // Stats Counters (Functionality from original script)
+            document.getElementById('statRandevu').textContent = data.appointments?.length || 0;
+            document.getElementById('statAnaliz').textContent = data.labResults?.length || 0;
+            document.getElementById('statResept').textContent = data.prescriptions?.length || 0;
+            document.getElementById('statHekim').textContent = data.savedDoctors?.length || 0;
+
+            // Profile Form
+            document.getElementById('pName').value = data.fullName;
+            document.getElementById('pBirth').value = data.birthDate || '';
+            document.getElementById('pPhone').value = data.phone || '';
+            document.getElementById('pBlood').value = data.bloodType || '';
+            document.getElementById('pWeight').value = data.weight || '';
+            document.getElementById('pHeight').value = data.height || '';
+            document.getElementById('pAddress').value = data.address || '';
+        }
+
+        // 3. Save Functionality (Ported from original script)
+        document.getElementById('profileUpdateForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const user = auth.currentUser;
+            const updated = {
+                fullName: document.getElementById('pName').value,
+                birthDate: document.getElementById('pBirth').value,
+                phone: document.getElementById('pPhone').value,
+                bloodType: document.getElementById('pBlood').value,
+                weight: document.getElementById('pWeight').value,
+                height: document.getElementById('pHeight').value,
+                address: document.getElementById('pAddress').value,
+                appointments: [], labResults: [], prescriptions: [], savedDoctors: [] // Keep arrays
+            };
+
+            localStorage.setItem('userData_' + user.uid, JSON.stringify(updated));
+            alert('Məlumatlar uğurla yadda saxlanıldı!');
+            location.reload();
+        });
+
+        function logout() { auth.signOut().then(() => window.location.href = 'login.htm'); }
+    </script>
+</body>
+</html>

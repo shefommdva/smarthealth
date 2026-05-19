@@ -1,0 +1,271 @@
+:root {
+    --primary: #2A7FBA;
+    --accent: #808a8b;
+    --bg-light: #F7FAFC;
+    --text-dark: #2F3E46;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    margin: 0;
+    background: var(--bg-light);
+    color: var(--text-dark);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 8%;
+    background: #fff;
+    border-bottom: 1px solid #E6ECF0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary);
+    text-decoration: none;
+}
+
+nav {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+}
+
+nav a {
+    color: var(--text-dark);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.btn-primary,
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 0;
+    border-radius: 8px;
+    padding: 12px 18px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: #fff;
+}
+
+.btn-secondary {
+    background: #EAF4FB;
+    color: var(--primary);
+}
+
+.page-shell {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 34px 8% 50px;
+}
+
+.profile-layout,
+.booking-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 28px;
+    align-items: start;
+}
+
+.panel,
+.doctor-hero,
+.summary-card {
+    background: #fff;
+    border: 1px solid #E6ECF0;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.doctor-hero {
+    padding: 28px;
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 24px;
+}
+
+.doctor-hero img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.doctor-hero h1 {
+    margin: 0 0 6px;
+    font-size: 30px;
+}
+
+.muted {
+    color: #667985;
+}
+
+.meta-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.meta-item {
+    background: #F7FAFC;
+    border: 1px solid #E6ECF0;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 14px;
+}
+
+.panel {
+    padding: 24px;
+    margin-top: 20px;
+}
+
+.panel h2,
+.summary-card h2 {
+    margin: 0 0 14px;
+    font-size: 20px;
+}
+
+.chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.chip {
+    background: #E8F5E9;
+    color: #2E7D32;
+    border-radius: 999px;
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.summary-card {
+    padding: 22px;
+    position: sticky;
+    top: 86px;
+}
+
+.summary-card img {
+    width: 74px;
+    height: 74px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.summary-top {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.slots {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.slot,
+.visit-type {
+    border: 1px solid #DCE3E8;
+    background: #fff;
+    border-radius: 8px;
+    padding: 11px;
+    cursor: pointer;
+    text-align: center;
+    font-weight: 700;
+}
+
+.slot.active,
+.visit-type.active {
+    border-color: var(--primary);
+    background: #EAF4FB;
+    color: var(--primary);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.field.full {
+    grid-column: 1 / -1;
+}
+
+.field label {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.field input,
+.field textarea,
+.field select {
+    border: 1px solid #DCE3E8;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 14px;
+}
+
+.success-box {
+    max-width: 760px;
+    margin: 55px auto;
+    text-align: center;
+    padding: 38px;
+}
+
+.success-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    background: #E8F5E9;
+    color: #2E7D32;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+
+@media (max-width: 860px) {
+    .profile-layout,
+    .booking-layout,
+    .doctor-hero {
+        grid-template-columns: 1fr;
+    }
+
+    .summary-card {
+        position: static;
+    }
+
+    .form-grid,
+    .meta-grid {
+        grid-template-columns: 1fr;
+    }
+}

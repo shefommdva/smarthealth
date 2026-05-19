@@ -1,0 +1,369 @@
+﻿<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Həkim Axtarışı | SmartHealth</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <link rel="stylesheet" href="assets/modern-redesign.css">
+    
+        <link rel="stylesheet" href="assets/site-navbar.css">
+<style>
+        body { background: #f8fafc; }
+
+        .search-container {
+            display: grid;
+            grid-template-columns: 420px 1fr;
+        }
+
+        /* Sidebar Results */
+        .sidebar {
+            background: white;
+            border-right: 1px solid rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-height: 0;
+            z-index: 10;
+        }
+
+        .filter-header {
+            padding: 108px 20px 18px; /* top padding clears the floating island nav (~20px top + ~52px height + buffer) */
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .results-list {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding: 18px 20px;
+            scroll-behavior: smooth;
+        }
+
+        /* Result Card Styles */
+        .doctor-result-card {
+            padding: 18px;
+            border-radius: 18px;
+            margin-bottom: 14px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid transparent;
+            position: relative;
+        }
+
+        .doctor-result-card:hover {
+            border-color: var(--primary);
+            background: rgba(14, 165, 233, 0.02);
+            transform: translateY(-2px);
+        }
+
+        .doctor-result-card.active {
+            border-color: var(--primary);
+            box-shadow: 0 10px 25px -5px rgba(14, 165, 233, 0.1);
+        }
+
+        .doc-avatar {
+            width: 68px;
+            height: 68px;
+            border-radius: 16px;
+            object-fit: cover;
+            background: #f1f5f9;
+        }
+
+        .badge-verified {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #059669;
+            background: #ecfdf5;
+            padding: 3px 9px;
+            border-radius: 99px;
+            margin-bottom: 6px;
+        }
+
+        /* Map UI */
+        #map {
+            width: 100%;
+            height: 100%;
+            background: #e2e8f0;
+        }
+
+        /* Floating Filter Controls */
+        .filter-bar {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 12px 0;
+            scrollbar-width: none;
+        }
+
+        .filter-bar::-webkit-scrollbar { display: none; }
+
+        .f-pill {
+            padding: 8px 14px;
+            border-radius: 99px;
+            background: #f1f5f9;
+            border: 1px solid transparent;
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .f-pill.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .doctor-result-card {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        .doctor-result-card.hidden {
+            display: none;
+        }
+
+        @media (max-width: 1024px) {
+            .search-container { grid-template-columns: 1fr; }
+            #map { display: none; }
+        }
+    </style>
+</head>
+<body class="site-search-layout">
+
+    <div class="island-nav-wrapper">
+        <nav class="island-nav">
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <a href="homepage.htm" class="logo"><i class="fa-solid fa-staff-snake"></i></a>
+                <div style="background: #f1f5f9; padding: 10px 20px; border-radius: 99px; display: flex; align-items: center; gap: 12px;">
+                    <i class="fa-solid fa-magnifying-glass" style="color: #94a3b8;"></i>
+                    <input type="text" placeholder="Həkim, ixtisas və ya klinika" style="background: transparent; border: none; outline: none; font-weight: 600; color: #1e293b;">
+                </div>
+            </div>
+            <div class="nav-links">
+                <a href="clinics.htm">Klinikalar</a>
+                <a href="help.htm">Kömək</a>
+            </div>
+            <a href="Şəxsikabinet.htm" class="btn-pill btn-primary">Mənim Profilim</a>
+        </nav>
+    </div>
+
+    <main class="search-container">
+        <aside class="sidebar">
+            <div class="filter-header">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h2 style="font-size: 18px; font-weight: 800;"><span id="resultCount">0</span> nəticə tapıldı</h2>
+                    <button class="sidebar" style="font-size: 13px; color: var(--primary); font-weight: 700;">Xəritədə axtar</button>
+                </div>
+                <div style="background: #f1f5f9; padding: 12px 16px; border-radius: 16px; display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                    <i class="fa-solid fa-magnifying-glass" style="color: #94a3b8;"></i>
+                    <input type="text" id="searchResultsInput" placeholder="Həkim, ixtisas, klinika və ya sığorta..." style="background: transparent; border: none; outline: none; width: 100%; font-weight: 600; color: #1e293b;">
+                </div>
+                <div class="filter-bar">
+                    <div class="f-pill active" data-filter="">Hamısı</div>
+                    <div class="f-pill" data-filter="today">Bu gün</div>
+                    <div class="f-pill" data-filter="Kardioloq">Kardioloq</div>
+                    <div class="f-pill" data-filter="Nevroloq">Nevroloq</div>
+                    <div class="f-pill" data-filter="Stomatoloq">Stomatoloq</div>
+                    <div class="f-pill" data-filter="Oftalmoloq">Oftalmoloq</div>
+                    <div class="f-pill" data-filter="insurance">Sığorta ilə</div>
+                    <div class="f-pill" data-filter="rating">Reytinq 4.5+</div>
+                </div>
+            </div>
+
+            <div class="results-list" id="results">
+            </div>
+        </aside>
+
+        <section id="map"></section>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <script src="assets/smarthealth-doctors.js"></script>
+    <script>
+        const doctors = window.SmartHealthDoctors || [];
+        const specialtyMap = {
+            cardiology: 'Kardioloq',
+            stomatology: 'Stomatoloq',
+            ophthalmology: 'Oftalmoloq',
+            neurology: 'Nevroloq',
+            therapy: 'Terapevt'
+        };
+        let activeFilter = '';
+        let map;
+        let markers = [];
+
+        function normalize(value) {
+            return String(value || '').toLocaleLowerCase('az').trim();
+        }
+
+        function queryMatchesDoctor(doctor, query) {
+            if (!query) return true;
+            const target = normalize(`${doctor.name} ${doctor.specialty} ${doctor.clinic} ${doctor.location} ${doctor.notes} ${doctor.insurance.join(' ')}`);
+            return target.includes(normalize(query));
+        }
+
+        function filterMatchesDoctor(doctor) {
+            if (!activeFilter) return true;
+            if (activeFilter === 'today') return normalize(doctor.nextAvailable).includes('bu gün');
+            if (activeFilter === 'insurance') return doctor.insurance.length > 0;
+            if (activeFilter === 'rating') return Number(doctor.rating) >= 4.5;
+            return doctor.specialty === activeFilter;
+        }
+
+        function filteredDoctors() {
+            const query = document.getElementById('searchResultsInput').value;
+            return doctors.filter(doctor => queryMatchesDoctor(doctor, query) && filterMatchesDoctor(doctor));
+        }
+
+        function renderDoctorCard(doctor) {
+            return `
+                <article class="doctor-result-card" data-specialty="${doctor.specialty}">
+                    <div style="display: flex; gap: 14px;">
+                        <img src="${doctor.image}" class="doc-avatar" alt="${doctor.name}">
+                        <div style="flex: 1;">
+                            <span class="badge-verified"><i class="fa-solid fa-check-double"></i> Təsdiqlənmiş</span>
+                            <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 3px;">${doctor.name}</h3>
+                            <p style="font-size: 13px; color: #64748b; margin-bottom: 8px;">${doctor.specialty} • ${doctor.experience} il təcrübə</p>
+                            <div style="display: flex; gap: 12px; font-size: 12px; font-weight: 600; color: #475569; flex-wrap: wrap;">
+                                <span><i class="fa-solid fa-star" style="color: #f59e0b;"></i> ${doctor.rating} (${doctor.reviews} rəy)</span>
+                                <span><i class="fa-solid fa-location-dot"></i> ${doctor.clinic}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center; gap: 14px;">
+                        <div>
+                            <p style="font-size: 11px; color: #94a3b8; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Növbəti mövcud vaxt</p>
+                            <p style="font-size: 14px; font-weight: 700; color: #0ea5e9;">${doctor.nextAvailable}</p>
+                        </div>
+                        <div style="text-align: right;">
+                            <p style="font-size: 16px; font-weight: 800; color: #1e293b;">${doctor.price}</p>
+                            <a href="reservation.htm?id=${doctor.id}" class="btn-pill btn-primary" style="padding: 8px 20px; font-size: 12px; margin-top: 4px;">Rezerv et</a>
+                        </div>
+                    </div>
+                </article>
+            `;
+        }
+
+        function renderResults() {
+            const list = filteredDoctors();
+            document.getElementById('resultCount').textContent = list.length;
+            document.getElementById('results').innerHTML = list.length
+                ? list.map(renderDoctorCard).join('')
+                : '<div class="doctor-result-card" style="cursor: default;"><h3>Nəticə tapılmadı</h3><p>Axtarışı və ya filtri dəyişərək yenidən yoxlayın.</p></div>';
+            updateMapMarkers(list);
+        }
+
+        function updateMapMarkers(list) {
+            if (!map || !window.L) return;
+            markers.forEach(marker => map.removeLayer(marker));
+            markers = list.map(doctor => {
+                const marker = L.marker(doctor.clinicCoords || doctor.coords).addTo(map).bindPopup(`<strong>${doctor.name}</strong><br>${doctor.clinic}`);
+                return marker;
+            });
+            if (markers.length) map.fitBounds(new L.featureGroup(markers).getBounds().pad(0.18), { maxZoom: 13 });
+        }
+
+        function initMap() {
+            const mapContainer = document.getElementById('map');
+            if (!window.L || !mapContainer || mapContainer.offsetHeight <= 0) return;
+            map = L.map('map', { zoomControl: false, attributionControl: false }).setView([40.4093, 49.8671], 12);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(map);
+        }
+
+        document.querySelectorAll('.f-pill').forEach(pill => {
+            pill.addEventListener('click', function() {
+                document.querySelectorAll('.f-pill').forEach(p => p.classList.remove('active'));
+                this.classList.add('active');
+                activeFilter = this.dataset.filter || '';
+                renderResults();
+            });
+        });
+
+        document.getElementById('searchResultsInput').addEventListener('input', renderResults);
+        document.getElementById('searchResultsInput').addEventListener('keydown', event => {
+            if (event.key === 'Enter') renderResults();
+        });
+
+        const params = new URLSearchParams(window.location.search);
+        const rawSpecialty = params.get('specialty');
+        const initialSearch = params.get('search') || params.get('clinic') || '';
+        const initialInsurance = params.get('insurance') || '';
+        document.getElementById('searchResultsInput').value = initialSearch || initialInsurance;
+        activeFilter = specialtyMap[normalize(rawSpecialty)] || rawSpecialty || '';
+        if (activeFilter) {
+            document.querySelectorAll('.f-pill').forEach(pill => {
+                pill.classList.toggle('active', pill.dataset.filter === activeFilter);
+            });
+        }
+
+        initMap();
+        renderResults();
+    </script>
+    <script src="assets/site-navbar.js"></script>
+
+    <script>
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                // Target ONLY the island-nav-wrapper (our nav), not any injected site-header
+                const navWrapper = document.querySelector('.island-nav-wrapper');
+                if (!navWrapper) return;
+
+                // Hide any duplicate navbar injected by site-navbar.js permanently on this page
+                const injectedHeader = document.querySelector('.site-header');
+                if (injectedHeader) {
+                    injectedHeader.style.display = 'none';
+                }
+
+                const HIDE_DELAY = 3000; // 3 seconds
+                const SHOW_ZONE = 80; // px from top of screen
+
+                let hideTimer = null;
+                let isHidden = false;
+
+                navWrapper.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                navWrapper.style.willChange = 'opacity, transform';
+
+                function hideNav() {
+                    isHidden = true;
+                    navWrapper.style.opacity = '0';
+                    navWrapper.style.transform = 'translateY(-20px)';
+                    navWrapper.style.pointerEvents = 'none';
+                }
+
+                function showNav() {
+                    isHidden = false;
+                    navWrapper.style.opacity = '1';
+                    navWrapper.style.transform = 'translateY(0)';
+                    navWrapper.style.pointerEvents = '';
+                    resetTimer();
+                }
+
+                function resetTimer() {
+                    clearTimeout(hideTimer);
+                    hideTimer = setTimeout(hideNav, HIDE_DELAY);
+                }
+
+                document.addEventListener('mousemove', function(e) {
+                    if (e.clientY <= SHOW_ZONE) {
+                        if (isHidden) showNav();
+                    } else {
+                        if (!isHidden) resetTimer();
+                    }
+                });
+
+                resetTimer();
+            }, 300);
+        });
+    </script>
+
+</body>
+</html>

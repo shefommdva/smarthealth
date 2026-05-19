@@ -1,0 +1,449 @@
+﻿<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rəylər Necə İşləyir | SmartHealth</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <link rel="stylesheet" href="assets/modern-redesign.css">
+    <link rel="stylesheet" href="assets/site-navbar.css">
+    <link rel="stylesheet" href="assets/site-footer.css">
+    
+    <style>
+        :root {
+            --primary: #0ea5e9;
+            --primary-light: #e0f2fe;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border-light: #e2e8f0;
+            --bg-light: #f8fafc;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: var(--text-dark);
+            font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* --- Sleek Hero Section --- */
+        .trust-hero {
+            padding: 160px 5% 80px;
+            text-align: center;
+            background: linear-gradient(180deg, var(--bg-light) 0%, rgba(255,255,255,0) 100%);
+            position: relative;
+        }
+
+        .badge-verified {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            border-radius: 99px;
+            font-weight: 700;
+            font-size: 13px;
+            margin-bottom: 24px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .trust-hero h1 {
+            font-size: 52px;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+
+        .trust-hero p {
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        /* --- Modern Process Steps --- */
+        .process-container {
+            max-width: 800px;
+            margin: 0 auto 100px;
+            padding: 0 5%;
+        }
+
+        .process-step {
+            display: flex;
+            gap: 32px;
+            background: #ffffff;
+            border: 1px solid var(--border-light);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0; /* For GSAP */
+            transform: translateY(30px); /* For GSAP */
+        }
+
+        .process-step:hover {
+            transform: translateY(-4px) !important;
+            box-shadow: 0 12px 30px rgba(14, 165, 233, 0.08);
+            border-color: #cbd5e1;
+        }
+
+        .step-number {
+            font-size: 64px;
+            font-weight: 900;
+            color: var(--primary-light);
+            line-height: 0.8;
+            letter-spacing: -2px;
+        }
+
+        .process-content h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-dark);
+        }
+
+        .process-content p {
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-size: 15px;
+            margin: 0;
+        }
+
+        /* --- Minimalist Comments Section --- */
+        .comments-section {
+            padding: 60px 8% 100px;
+            background: var(--bg-light);
+            border-top: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .comments-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-heading {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-heading h2 {
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 16px;
+        }
+
+        .section-heading p {
+            color: var(--text-muted);
+            max-width: 500px;
+            margin: 0 auto;
+            font-size: 16px;
+        }
+
+        .comments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .comment-card {
+            background: #fff;
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            padding: 32px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            opacity: 0; /* For GSAP */
+            transform: translateY(30px); /* For GSAP */
+        }
+
+        .quote-icon {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            font-size: 40px;
+            color: var(--bg-light);
+            z-index: 0;
+        }
+
+        .comment-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            position: relative;
+            z-index: 1;
+        }
+
+        .comment-person strong {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .comment-person span {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .comment-stars {
+            color: #f59e0b;
+            font-size: 12px;
+            background: #fffbeb;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 700;
+        }
+
+        .comment-card blockquote {
+            margin: 0;
+            color: #334155;
+            line-height: 1.7;
+            font-size: 15px;
+            position: relative;
+            z-index: 1;
+            flex-grow: 1;
+        }
+
+        .comment-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 1px dashed var(--border-light);
+            font-size: 13px;
+        }
+
+        .comment-proof {
+            color: #10b981;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* --- Sleek FAQ Grid --- */
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            padding: 100px 8%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .faq-card {
+            padding: 32px;
+            background: white;
+            border-radius: 20px;
+            border: 1px solid var(--border-light);
+            transition: border-color 0.3s;
+            opacity: 0; /* For GSAP */
+            transform: translateY(30px); /* For GSAP */
+        }
+
+        .faq-card:hover {
+            border-color: var(--primary);
+        }
+
+        .faq-icon-wrapper {
+            width: 48px;
+            height: 48px;
+            background: var(--bg-light);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--primary);
+            margin-bottom: 24px;
+        }
+
+        .faq-card h4 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .faq-card p {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .trust-hero h1 { font-size: 36px; }
+            .process-step { flex-direction: column; gap: 16px; padding: 24px; }
+            .step-number { font-size: 40px; }
+        }
+    </style>
+</head>
+<body class="reviews-page">
+
+    <div class="island-nav-wrapper">
+        <nav class="island-nav">
+            <a href="homepage.htm" class="logo"><i class="fa-solid fa-staff-snake"></i> SmartHealth</a>
+            <div class="nav-links">
+                <a href="doctors.htm">Həkimlər</a>
+                <a href="haqqimizda.htm">Haqqımızda</a>
+            </div>
+            <a href="qeydiyyat.htm" class="btn-pill btn-primary">İndi qoşul</a>
+        </nav>
+    </div>
+
+    <header class="trust-hero">
+        <div class="badge-verified"><i class="fa-solid fa-shield-check"></i> 100% Yoxlanılmış Rəylər</div>
+        <h1>Şəffaflıq Bizim Prioritetimizdir</h1>
+        <p>SmartHealth-də rəylər yalnız real təcrübəyə əsaslanır. Hər bir rəy mürəkkəb yoxlama və moderasiya prosesindən keçir.</p>
+    </header>
+
+    <main>
+        <section class="process-container">
+            <div class="process-step gs-reveal">
+                <div class="step-number">01</div>
+                <div class="process-content">
+                    <h3>Yalnız Real Randevular</h3>
+                    <p>Rəy yazmaq hüququ yalnız platformamız vasitəsilə randevusu tamamlanmış xəstələrə verilir. Sistem randevunun baş tutduğunu klinikadan təsdiqlədikdən sonra rəy linkini aktivləşdirir.</p>
+                </div>
+            </div>
+
+            <div class="process-step gs-reveal">
+                <div class="step-number">02</div>
+                <div class="process-content">
+                    <h3>Moderasiya Prosesi</h3>
+                    <p>Hər bir rəy bizim icma standartlarımıza uyğunluq üçün yoxlanılır. Biz təhqir, şəxsi məlumatların ifşası və ya qeyri-etik ifadələri dərhal sistemdən kənarlaşdırırıq.</p>
+                </div>
+            </div>
+
+            <div class="process-step gs-reveal">
+                <div class="step-number">03</div>
+                <div class="process-content">
+                    <h3>Dəyişdirilməzlik</h3>
+                    <p>Biz rəylərin məzmununu redaktə etmirik. Rəy ya tam şəkildə dərc olunur, ya da icma qaydalarını pozursa rədd edilir. Həkimlərin mənfi rəyləri silmək hüququ yoxdur.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="comments-section">
+            <div class="comments-wrap">
+                <div class="section-heading gs-reveal">
+                    <div class="badge-verified" style="background: transparent; border: 1px solid var(--border-light); color: var(--text-muted);"><i class="fa-solid fa-comments"></i> Pasiyent şərhləri</div>
+                    <h2>Platformada görünən rəy nümunələri</h2>
+                    <p>Bu kartlar rəyin necə təqdim olunduğunu göstərir: randevu təsdiqi, tarix, həkim adı və moderasiya statusu şərhlə birlikdə görünür.</p>
+                </div>
+
+                <div class="comments-grid">
+                    <article class="comment-card gs-reveal">
+                        <i class="fa-solid fa-quote-right quote-icon"></i>
+                        <div class="comment-top">
+                            <div class="comment-person">
+                                <strong>Aysel M.</strong>
+                                <span>Dr. Azər Hüseynov · Kardioloq</span>
+                            </div>
+                            <div class="comment-stars"><i class="fa-solid fa-star"></i> 4.9</div>
+                        </div>
+                        <blockquote>Qəbul vaxtında başladı, həkim analizləri sadə dildə izah etdi və növbəti addımları yazılı şəkildə göndərdi.</blockquote>
+                        <div class="comment-footer">
+                            <span style="color: var(--text-muted);">12 Aprel 2026</span>
+                            <div class="comment-proof"><i class="fa-solid fa-circle-check"></i> Təsdiqlənib</div>
+                        </div>
+                    </article>
+
+                    <article class="comment-card gs-reveal">
+                        <i class="fa-solid fa-quote-right quote-icon"></i>
+                        <div class="comment-top">
+                            <div class="comment-person">
+                                <strong>Anonim pasiyent</strong>
+                                <span>Dr. Leyla Qasımova · Nevroloq</span>
+                            </div>
+                            <div class="comment-stars"><i class="fa-solid fa-star"></i> 4.8</div>
+                        </div>
+                        <blockquote>Şikayətlərimi diqqətlə dinlədi. Klinikada yönləndirmə aydın idi və gözləmə müddəti qısa oldu.</blockquote>
+                        <div class="comment-footer">
+                            <span style="color: var(--text-muted);">28 Mart 2026</span>
+                            <div class="comment-proof"><i class="fa-solid fa-shield-heart"></i> Təsdiqlənib</div>
+                        </div>
+                    </article>
+
+                    <article class="comment-card gs-reveal">
+                        <i class="fa-solid fa-quote-right quote-icon"></i>
+                        <div class="comment-top">
+                            <div class="comment-person">
+                                <strong>Murad R.</strong>
+                                <span>Dr. Günel Hüseynova · Stomatoloq</span>
+                            </div>
+                            <div class="comment-stars"><i class="fa-solid fa-star"></i> 5.0</div>
+                        </div>
+                        <blockquote>Qiymət əvvəlcədən göründüyü kimi idi. Müalicə planı və sığorta ilə bağlı suallarım detallı cavablandırıldı.</blockquote>
+                        <div class="comment-footer">
+                            <span style="color: var(--text-muted);">3 May 2026</span>
+                            <div class="comment-proof"><i class="fa-solid fa-lock"></i> Təsdiqlənib</div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-grid">
+            <div class="faq-card gs-reveal">
+                <div class="faq-icon-wrapper">
+                    <i class="fa-solid fa-user-ninja"></i>
+                </div>
+                <h4>Anonimlik qorunurmu?</h4>
+                <p>Bəli, rəy yazarkən adınızın gizli saxlanılmasını seçə bilərsiniz. Bu, həkimlə münasibətinizə təsir etmədən dürüst rəy verməyinizə şərait yaradır.</p>
+            </div>
+            
+            <div class="faq-card gs-reveal">
+                <div class="faq-icon-wrapper">
+                    <i class="fa-solid fa-reply-all"></i>
+                </div>
+                <h4>Həkimlər cavab verə bilər?</h4>
+                <p>Bəli, həkimlərin hər bir rəyə rəsmi cavab vermək hüququ var. Bu, yanlış anlaşılmaların aradan qaldırılması üçün şəffaf dialoq yaradır.</p>
+            </div>
+
+            <div class="faq-card gs-reveal">
+                <div class="faq-icon-wrapper">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+                <h4>Saxta rəy necə aşkarlanır?</h4>
+                <p>Süni intellekt alqoritmlərimiz IP ünvanı, dil nümunələri və randevu tarixçəsi əsasında şübhəli aktivliyi avtomatik bloklayır.</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Activated GSAP Scroll Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        const elements = gsap.utils.toArray('.gs-reveal');
+
+        elements.forEach((elem) => {
+            gsap.to(elem, {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: elem,
+                    start: "top 85%", // Triggers when the top of the element hits 85% down the viewport
+                    toggleActions: "play none none none" 
+                }
+            });
+        });
+    </script>
+    
+    <script src="assets/site-navbar.js"></script>
+    <script src="assets/site-footer.js"></script>
+</body>
+</html>

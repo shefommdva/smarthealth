@@ -1,0 +1,39 @@
+Overview & Design Philosophy
+Redesign the existing medical website while preserving 100% of its current functionality and content structure. The goal is a visual and interaction overhaul — transforming the UI into a modern, premium, Framer-style experience. Think clean, breathable layouts with depth through glassmorphism, smooth scroll-driven animations, and a refined medical color palette. The site should feel trustworthy and clinical, yet contemporary and alive — similar in energy to wallettemplate.framer.website but adapted for healthcare.
+
+Typography
+Use Montserrat (Google Fonts) as the sole typeface across the entire site. Hero headings should be bold and large (64–80px on desktop), section titles at 36–48px, body text at 16–18px with relaxed line-height (1.6–1.8). Letter-spacing on headings should be slightly tight (−0.02em) to give a premium editorial feel. All caps labels or tags should use 0.1–0.15em tracking.
+
+Color Palette — Medical Recolor
+Replace the existing color scheme with a cohesive medical-modern palette:
+Primary: #0EA5E9 (sky blue — trust, clarity, medicine)
+Secondary: #6EE7B7 (soft mint green — health, calm)
+Accent: #818CF8 (soft indigo/lavender — technology, precision)
+Background: #F8FAFF (near-white with a cool blue tint)
+Surface/Card: rgba(255, 255, 255, 0.6) with backdrop blur for glass cards
+Text Primary: #0F172A (near-black slate)
+Text Secondary: #64748B (muted slate)
+Gradient Blobs (hero bg): Soft radial gradients mixing #BAE6FD, #A7F3D0, and #E0E7FF — similar to the blurred ambient glow in the wallet template reference
+
+Navbar — Glassmorphism Island Style
+The navbar should be a floating pill/island centered at the top of the viewport, detached from the edges with ~20px margin. It should have:
+background: rgba(255, 255, 255, 0.15), backdrop-filter: blur(20px), a 1px solid rgba(255,255,255,0.3) border, and a subtle box-shadow: 0 8px 32px rgba(0,0,0,0.08). Rounded corners of border-radius: 9999px. On scroll, it should subtly increase its blur and drop shadow opacity for a "lifted" feel. The CTA button inside the navbar ("Book Appointment" or equivalent) should use the primary blue with white text and a pill shape.
+
+Hero Section
+Large, centered headline in bold Montserrat. Beneath it, a short subheadline in muted slate. Two CTA buttons side by side — one filled (primary blue), one ghost (outlined with a light border). Behind the text, use ambient gradient blobs (blurred, non-distracting) in the medical palette colors, similar to the soft pink/lavender background in the wallet reference image. Include a floating phone or device mockup if applicable, or a stylized medical UI card preview.
+
+Scroll Animations (Framer-style)
+Every section should animate in on scroll. Implement the following behaviors using a library like GSAP ScrollTrigger, Framer Motion, or AOS:
+Text blocks should fade up (translateY from 40px → 0, opacity 0 → 1) with a 0.6s ease-out. Cards should stagger-fade in sequence with 0.1–0.15s delays between each. Section images or mockups should scale in slightly (from scale 0.95 → 1) as they enter the viewport. Stats or numbers should use a count-up animation when they scroll into view. The overall feel should be smooth and purposeful — not overdone. Think "elements gently arriving" rather than flashy bouncing.
+
+Cards & Components
+All cards should have: border-radius: 20–24px, glassmorphism background (rgba(255,255,255,0.55) + backdrop-filter: blur(16px)), a 1px solid rgba(255,255,255,0.4) border, and a soft shadow (0 4px 24px rgba(14, 165, 233, 0.08)). On hover, cards should lift slightly with transform: translateY(-6px) and increase shadow depth — transition of 0.3s ease. Feature/service cards should have a colored icon container in the top-left (small rounded square, ~48px, filled with a 10% opacity tint of the accent color with the icon centered in full color).
+
+Testimonials Section (Cleo-inspired Reference)
+Model the testimonials section after the second reference image. Use a horizontal carousel of testimonial cards with rounded corners and soft peach/mint backgrounds. Include a subtle halftone or dot-pattern avatar placeholder. Navigation arrows should be minimal circle buttons. The section headline should be witty and human — e.g., "Patients love what we do (and they're not shy about it)."
+
+Footer
+Dark section using #0F172A as background. Logo and tagline on the left. Links in columns in the center. A CTA block on the right ("Ready to get started?"). Subtle top border with a gradient line using the primary blue-to-mint gradient. Social icons should be small pill/circle buttons with glassmorphism treatment.
+
+General Rules
+Generous whitespace everywhere — minimum 80–120px vertical padding between sections. No harsh borders or dividers — use whitespace and subtle background shifts to separate content. All interactive elements (buttons, links, cards) must have smooth transition: all 0.3s ease hover states. Mobile-first responsive — the island navbar should collapse to a full-width pill with a hamburger menu on mobile. Corner radius should be consistent: use 16px for small elements, 24px for cards, 9999px for pills and buttons.

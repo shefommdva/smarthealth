@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Həkim Profili | SmartHealth</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <link rel="stylesheet" href="assets/modern-redesign.css">
+    <link rel="stylesheet" href="assets/site-navbar.css">
+    <link rel="stylesheet" href="assets/site-footer.css">
+    
+    <style>
+        .profile-hero { 
+            padding: 160px 8% 60px; 
+            position: relative; 
+            overflow: hidden; 
+            background: linear-gradient(180deg, rgba(14, 165, 233, 0.03) 0%, transparent 100%);
+        }
+
+        .profile-layout { 
+            display: grid; 
+            grid-template-columns: 1fr 400px; 
+            gap: 40px; 
+            padding: 0 8% 100px; 
+        }
+
+        /* Doctor Info Header */
+        .doctor-card-main {
+            display: flex;
+            gap: 40px;
+            padding: 40px;
+            align-items: center;
+        }
+
+        .doctor-avatar-huge {
+            width: 180px;
+            height: 180px;
+            border-radius: 40px;
+            object-fit: cover;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .expert-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            border-radius: 99px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        /* Content Sections */
+        .profile-section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .profile-section-title i {
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        .bio-text {
+            line-height: 1.8;
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+
+        /* Sticky Booking Card */
+        .booking-sidebar {
+            position: sticky;
+            top: 120px;
+            height: fit-content;
+        }
+
+        .price-tag {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin: 15px 0;
+        }
+
+        .availability-box {
+            background: rgba(14, 165, 233, 0.05);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 24px;
+            border: 1px dashed rgba(14, 165, 233, 0.3);
+        }
+
+        /* Chips for Education/Insurance */
+        .feature-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tag-chip {
+            background: white;
+            border: 1px solid rgba(0,0,0,0.05);
+            padding: 8px 18px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        @media (max-width: 1024px) {
+            .profile-layout { grid-template-columns: 1fr; }
+            .doctor-card-main { flex-direction: column; text-align: center; }
+            .booking-sidebar { position: relative; top: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="island-nav-wrapper">
+        <nav class="island-nav">
+            <a href="homepage.htm" class="logo"><i class="fa-solid fa-staff-snake"></i> SmartHealth</a>
+            <div class="nav-links">
+                <a href="clinics.htm">Klinikalar</a>
+                <a href="help.htm">Kömək</a>
+                <a href="login.htm">Daxil ol</a>
+            </div>
+            <a href="qeydiyyat.htm" class="btn-pill btn-primary">Qeydiyyat</a>
+        </nav>
+    </div>
+
+    <section class="profile-hero fade-up">
+        <div class="gradient-blob blob-1" style="opacity: 0.1;"></div>
+        <div id="headerContent" class="glass-panel doctor-card-main stagger-cards">
+            </div>
+    </section>
+
+    <main class="profile-layout">
+        <section class="fade-up stagger-cards">
+            <div class="glass-card" style="padding: 40px; margin-bottom: 32px;">
+                <h3 class="profile-section-title"><i class="fa-solid fa-address-card"></i> Haqqında</h3>
+                <p id="doctorBio" class="bio-text"></p>
+            </div>
+
+            <div class="glass-card" style="padding: 40px; margin-bottom: 32px;">
+                <h3 class="profile-section-title"><i class="fa-solid fa-shield-halved"></i> Qəbul edilən sığortalar</h3>
+                <div id="insuranceList" class="feature-chips">
+                    </div>
+            </div>
+
+            <div class="glass-card" style="padding: 40px;">
+                <h3 class="profile-section-title"><i class="fa-solid fa-graduation-cap"></i> Təhsil və İxtisas</h3>
+                <div id="educationList" class="feature-chips">
+                    </div>
+            </div>
+        </section>
+
+        <aside class="booking-sidebar fade-up">
+            <div id="bookingCard" class="glass-card" style="padding: 40px; border: 1px solid var(--primary-light);">
+                </div>
+            
+            <div class="glass-panel" style="margin-top: 24px; padding: 24px; display: flex; align-items: center; gap: 15px;">
+                <i class="fa-solid fa-circle-info" style="color: var(--primary); font-size: 20px;"></i>
+                <p style="font-size: 13px; color: var(--text-secondary); margin: 0;">Bu həkim rəqəmsal növbə sistemimizə qoşulub. Təsdiq dərhal gəlir.</p>
+            </div>
+        </aside>
+    </main>
+
+    <footer class="premium-footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="homepage.htm" class="logo"><i class="fa-solid fa-staff-snake"></i> SmartHealth</a>
+                <p>Səhiyyəni hər kəs üçün əlçatan və şəffaf edirik.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Şirkət</h4>
+                <ul>
+                    <li><a href="haqqimizda.htm">Haqqımızda</a></li>
+                    <li><a href="contact.htm">Əlaqə</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Sığorta</h4>
+                <ul>
+                    <li><a href="#">Paşa Sığorta</a></li>
+                    <li><a href="#">Atəşgah</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 SmartHealth, Inc. Bakı, Azərbaycan</p>
+        </div>
+    </footer>
+
+    <script src="assets/smarthealth-doctors.js"></script>
+    <script src="assets/modern-redesign.js"></script>
+    <script src="assets/site-navbar.js"></script>
+    <script src="assets/site-footer.js"></script>
+    <script>
+        // Data logic from your original file
+        const urlParams = new URLSearchParams(window.location.search);
+        const doctorId = urlParams.get('id');
+        const doctors = window.SmartHealthDoctors || [];
+        const doctor = doctors.find(d => d.id === doctorId) || doctors[0];
+
+        if (doctor) {
+            // Header Redesign
+            document.getElementById('headerContent').innerHTML = `
+                <img src="${doctor.image}" alt="${doctor.name}" class="doctor-avatar-huge">
+                <div style="flex: 1;">
+                    <div class="expert-badge"><i class="fa-solid fa-check-double"></i> Təsdiqlənmiş Mütəxəssis</div>
+                    <h1 style="font-size: 36px; font-weight: 800; margin-bottom: 8px;">${doctor.name}</h1>
+                    <p style="font-size: 18px; color: var(--primary); font-weight: 600; margin-bottom: 20px;">${doctor.specialty}</p>
+                    
+                    <div style="display: flex; gap: 30px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 20px;">
+                        <div>
+                            <div style="font-size: 12px; color: var(--text-secondary); text-transform: uppercase;">Təcrübə</div>
+                            <div style="font-weight: 700; font-size: 16px;">${doctor.experience} il</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 12px; color: var(--text-secondary); text-transform: uppercase;">Reytinq</div>
+                            <div style="font-weight: 700; font-size: 16px; color: #f59e0b;"><i class="fa-solid fa-star"></i> 4.9 (120+ rəy)</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 12px; color: var(--text-secondary); text-transform: uppercase;">Dil</div>
+                            <div style="font-weight: 700; font-size: 16px;">Az, Rus, İng</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Bio & Insurance
+            document.getElementById('doctorBio').textContent = doctor.bio;
+            document.getElementById('insuranceList').innerHTML = doctor.insurance.map(item => `
+                <span class="tag-chip">${item}</span>
+            `).join('');
+
+            document.getElementById('educationList').innerHTML = `
+                <span class="tag-chip">${doctor.specialty} üzrə mütəxəssis</span>
+                <span class="tag-chip">Azərbaycan Tibb Universiteti</span>
+            `;
+
+            // Booking Sidebar
+            document.getElementById('bookingCard').innerHTML = `
+                <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 5px;">Müayinə haqqı</h3>
+                <div class="price-tag">${doctor.price} ₼</div>
+                
+                <div class="availability-box">
+                    <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 5px;">Növbəti uyğun vaxt:</div>
+                    <div style="font-weight: 700; color: var(--primary);"><i class="fa-solid fa-clock"></i> ${doctor.nextAvailable}</div>
+                </div>
+                
+                <a class="btn-pill btn-primary" style="width:100%; text-align: center; margin-bottom: 12px; padding: 18px;" href="reservation.htm?id=${doctor.id}">
+                    Randevu götür
+                </a>
+                <button class="btn-pill btn-ghost" style="width:100%;" onclick="history.back()">
+                    <i class="fa-solid fa-arrow-left"></i> Geri qayıt
+                </button>
+            `;
+        }
+    </script>
+</body>
+</html>

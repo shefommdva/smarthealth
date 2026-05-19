@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş | SmartHealth</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link rel="stylesheet" href="assets/site-navbar.css">
+    <link rel="stylesheet" href="assets/site-footer.css">
+    <link rel="stylesheet" href="assets/modern-redesign.css">
+    <style>
+        .auth-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 120px 20px; background: radial-gradient(circle at top right, rgba(14, 165, 233, 0.1), transparent 40%); }
+        .auth-card-modern { width: 100%; max-width: 440px; padding: 48px; background: white; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+        .auth-tabs { display: flex; background: #f1f5f9; padding: 4px; border-radius: 14px; margin-bottom: 32px; }
+        .auth-tab { flex: 1; padding: 10px; text-align: center; font-size: 14px; font-weight: 600; color: #64748b; cursor: pointer; border-radius: 10px; text-decoration: none; }
+        .auth-tab.active { background: white; color: #0ea5e9; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .input-group { margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
+        .input-group i { font-size: 18px; color: #0ea5e9; width: 25px; text-align: center; }
+        .auth-input { flex: 1; padding: 14px 18px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); background: #f9fafb; }
+        .btn-primary { width: 100%; padding: 16px; background: #0ea5e9; color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; }
+        #authMessage { color: #ef4444; font-size: 13px; text-align: center; margin-bottom: 15px; display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="island-nav-wrapper">
+        <nav class="island-nav">
+            <a href="homepage.htm" class="logo"><i class="fa-solid fa-staff-snake"></i> SmartHealth</a>
+            <div class="nav-links">
+                <a href="qeydiyyat.htm" class="btn-pill btn-ghost">Qeydiyyat</a>
+            </div>
+        </nav>
+    </div>
+
+    <main class="auth-page">
+        <div class="auth-card-modern">
+            <div style="background: #0ea5e9; width: 64px; height: 64px; border-radius: 20px; display: flex; align-items: center; justify-content: center; color: white; margin: 0 auto 20px;">
+                <i class="fa-solid fa-user"></i>
+            </div>
+            <h1 style="font-size: 24px; font-weight: 800; text-align: center;">Xoş gəlmisiniz</h1>
+            <p style="color: #64748b; text-align: center; margin-bottom: 24px;">Daxil olmaq üçün məlumatlarınızı daxil edin.</p>
+
+            <div class="auth-tabs">
+                <a href="login.htm" class="auth-tab active">Pasiyent</a>
+                <a href="doctor-login.htm" class="auth-tab">Həkim</a>
+            </div>
+
+            <div id="authMessage"></div>
+
+            <form id="loginForm">
+                <div class="input-group">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" id="loginEmail" class="auth-input" placeholder="Email" required>
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="loginPassword" class="auth-input" placeholder="Şifrə" required>
+                </div>
+                <button type="submit" id="loginBtn" class="btn-primary">Giriş et</button>
+            </form>
+
+            <p style="margin-top: 32px; text-align: center; font-size: 14px; color: #64748b;">
+                Hesabınız yoxdur? <a href="qeydiyyat.htm" style="color: #0ea5e9; font-weight: 700; text-decoration: none;">Qeydiyyatdan keçin</a>
+            </p>
+        </div>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script>
+        // Use the Config from your learning scripts
+        const firebaseConfig = {
+            apiKey: "AIzaSyCDo3MFtj9qYwEbKRwKu5v7SBhmpk2eyIE",
+            authDomain: "smarthealth-d9c8b.firebaseapp.com",
+            projectId: "smarthealth-d9c8b",
+            storageBucket: "smarthealth-d9c8b.firebasestorage.app",
+            messagingSenderId: "908166581668",
+            appId: "1:908166581668:web:57c6372500cd5da6478531"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const msg = document.getElementById('authMessage');
+            const btn = document.getElementById('loginBtn');
+
+            msg.style.display = 'none';
+            btn.disabled = true; btn.textContent = 'Giriş edilir...';
+
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                localStorage.setItem('smarthealthAccountType', 'individual');
+                window.location.href = 'Şəxsikabinet.htm';
+            } catch (err) {
+                msg.style.display = 'block';
+                msg.textContent = 'Email və ya şifrə yanlışdır.';
+                btn.disabled = false; btn.textContent = 'Giriş et';
+                gsap.fromTo(".auth-card-modern", { x: -10 }, { x: 0, duration: 0.1, repeat: 5, yoyo: true });
+            }
+        });
+    </script>
+    <script src="assets/site-navbar.js"></script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+﻿<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İcma Qaydaları | SmartHealth</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <link rel="stylesheet" href="assets/modern-redesign.css">
+    
+        <link rel="stylesheet" href="assets/site-navbar.css">
+    <link rel="stylesheet" href="assets/site-footer.css">
+<style>
+        .standards-hero {
+            padding: 160px 8% 80px;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(16, 185, 129, 0.05) 0%, transparent 100%);
+        }
+
+        .standards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 32px;
+            padding: 40px 8% 100px;
+        }
+
+        .standard-card {
+            padding: 40px;
+            height: 100%;
+        }
+
+        .standard-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 24px;
+        }
+
+        .rule-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        .rule-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            font-size: 15px;
+            color: var(--text-secondary);
+            display: flex;
+            gap: 12px;
+        }
+
+        .rule-list li:last-child { border: none; }
+        .rule-list li i { color: #10b981; margin-top: 4px; }
+
+        .report-section {
+            background: var(--surface);
+            border-radius: 40px;
+            margin: 0 8% 100px;
+            padding: 80px 40px;
+            text-align: center;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .warning-box {
+            background: rgba(245, 158, 11, 0.05);
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            border-radius: 0 12px 12px 0;
+            margin-top: 20px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .standards-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="island-nav-wrapper">
+        <nav class="island-nav">
+            <a href="homepage.htm" class="logo"><i class="fa-solid fa-staff-snake"></i> SmartHealth</a>
+            <div class="nav-links">
+                <a href="haqqimizda.htm">Haqqımızda</a>
+                <a href="help.htm">Yardım</a>
+            </div>
+            <a href="login.htm" class="btn-pill btn-primary">Giriş</a>
+        </nav>
+    </div>
+
+    <header class="standards-hero fade-up">
+        <div class="expert-badge" style="background: rgba(16, 185, 129, 0.1); color: #10b981; margin-bottom: 20px; padding: 10px;padding-right: 10px; border-radius: 10px;">
+            <i class="fa-solid fa-shield-halved"></i> Təhlükəsiz İcma
+        </div>
+        <h1 style="font-size: clamp(32px, 4vw, 48px); font-weight: 800;">İcma Standartlarımız</h1>
+        <p style="max-width: 600px; margin: 20px auto; color: var(--text-secondary);">SmartHealth platformasında hər kəs üçün təhlükəsiz, hörmətli və şəffaf mühit yaratmaq üçün bu qaydalara əməl edilməlidir.</p>
+    </header>
+
+    <main class="standards-grid stagger-cards">
+        <div class="standard-card glass-card">
+            <div class="standard-icon"><i class="fa-solid fa-hospital-user"></i></div>
+            <h3>Pasiyentlər üçün</h3>
+            <p style="color: var(--text-secondary); font-size: 14px;">Xidmətlərimizdən istifadə edən hər bir istifadəçi aşağıdakılara riayət etməlidir:</p>
+            <ul class="rule-list">
+                <li><i class="fa-solid fa-circle-check"></i> Dəqiq şəxsi və tibbi məlumatların təqdim edilməsi.</li>
+                <li><i class="fa-solid fa-circle-check"></i> Randevulara vaxtında gəlmək və ya 24 saat öncə ləğv etmək.</li>
+                <li><i class="fa-solid fa-circle-check"></i> Tibbi personala qarşı hörmətli davranış.</li>
+            </ul>
+        </div>
+
+        <div class="standard-card glass-card">
+            <div class="standard-icon"><i class="fa-solid fa-user-doctor"></i></div>
+            <h3>Həkimlər üçün</h3>
+            <p style="color: var(--text-secondary); font-size: 14px;">Platformada fəaliyyət göstərən mütəxəssislərin öhdəlikləri:</p>
+            <ul class="rule-list">
+                <li><i class="fa-solid fa-circle-check"></i> Tibbi lisenziya və sertifikatların aktuallığı.</li>
+                <li><i class="fa-solid fa-circle-check"></i> Pasiyent məxfiliyinin (GDPR/AR qanunvericiliyi) qorunması.</li>
+                <li><i class="fa-solid fa-circle-check"></i> Rəylərin və reytinqlərin manipulyasiya edilməməsi.</li>
+            </ul>
+        </div>
+
+        <div class="standard-card glass-card">
+            <div class="standard-icon"><i class="fa-solid fa-star-half-stroke"></i></div>
+            <h3>Rəy və Reytinqlər</h3>
+            <p style="color: var(--text-secondary); font-size: 14px;">Şəffaflığı təmin etmək üçün rəy qaydalarımız:</p>
+            <ul class="rule-list">
+                <li><i class="fa-solid fa-circle-check"></i> Yalnız real qəbulda olan pasiyentlər rəy yaza bilər.</li>
+                <li><i class="fa-solid fa-circle-check"></i> Təhqiramiz və ya qeyri-etik ifadələrə yol verilmir.</li>
+                <li><i class="fa-solid fa-circle-check"></i> Reklam xarakterli kontent qadağandır.</li>
+            </ul>
+            <div class="warning-box">
+                <i class="fa-solid fa-triangle-exclamation"></i> Saxta rəylər profilin dərhal bloklanmasına səbəb olur.
+            </div>
+        </div>
+    </main>
+
+    <section class="report-section fade-up">
+        <i class="fa-solid fa-flag" style="font-size: 48px; color: var(--primary); margin-bottom: 24px;"></i>
+        <h2>Qayda pozuntusunu bildirin</h2>
+        <p style="max-width: 600px; margin: 16px auto 32px; color: var(--text-secondary);">Əgər icma qaydalarımızın pozulduğunu şahid olsanız, lütfən bizə məlumat verin. Hər bir müraciət anonim və ciddi şəkildə araşdırılır.</p>
+        <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+            <a href="contact.htm" class="btn-pill btn-primary">Şikayət et</a>
+            <a href="help.htm" class="btn-pill btn-ghost">Daha ətraflı</a>
+        </div>
+    </section>
+
+    <footer class="premium-footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="homepage.htm" class="logo"><i class="fa-solid fa-staff-snake"></i> SmartHealth</a>
+                <p>Güvənli və şəffaf rəqəmsal səhiyyə platforması.</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 SmartHealth. Bakı, Azərbaycan</p>
+        </div>
+    </footer>
+
+    <script src="assets/modern-redesign.js"></script>
+    <script src="assets/site-navbar.js"></script>
+    <script src="assets/site-footer.js"></script>
+</body>
+</html>
